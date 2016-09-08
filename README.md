@@ -70,6 +70,7 @@ Parameters:
 
 #### addUser(userInfo)
 _Add new user._
+
 Parameters:
 * userInfo: object
   * Properties:
@@ -81,7 +82,121 @@ Parameters:
 
 #### getViews()
 _Get all views._
+
 Parameters: _none_
+
+---
+
+#### getViewByName(name)
+_Get view by name._
+
+Parameters:
+* name : string
+
+---
+
+#### getView(id, [paging , query])
+_Get view by id, optionally paged, and optionally filtered records._
+
+Parameters:
+* id : number
+* [paging : object]
+  * Properties:
+    * start : number
+      * Starting index for paging.
+    * max : number
+      * Page size.
+* [query : string]
+  * Filter record results in view
+
+---
+
+#### getRecord(viewId, recordId)
+_Get record by id._
+
+Parameters:
+* viewId : number
+* recordId : number
+
+---
+
+#### addRecord(viewId, recordData)
+_Add new record._
+
+Parameters:
+* viewId: number
+* recordData : object
+  * Key value pair of field names and values for new record.
+
+---
+
+#### updateRecord(viewId, recordId, recordData)
+_Update exisiting record._
+
+Parameters:
+* viewId : number
+* recordId : number
+* recordData : object
+  * Key value pair of field names and values to update in record.
+
+---
+
+#### deleteAllRecordsInView(viewId)
+_Delete all records in a view._
+
+Parameters:
+* viewId : number
+
+---
+
+#### deleteRecord(viewId, recordId)
+_Delete record._
+
+Parameters:
+* viewId : number
+* recordId : number
+
+---
+
+#### getFile(viewId, recordId, fieldName, [options])
+_Get a file from a record._
+
+Parameters:
+* viewId : number
+* recordId : number
+* fieldName : string
+* [options : object]
+  * Properties:
+    * width : number
+      * Desired width of image file
+    * maxDimension : number
+      * Desired max dimension for image file
+    * NOTE: _These options only apply when the file is an image. Options are mutually exlusive, but if both are defined, only the width will be used)._
+
+
+---
+
+#### attachFile(viewId, recordId, fieldName, filePath)
+_Attach a file to a record (or overwrite and existing file)._
+
+Parameters:
+* viewId : number
+* recordId : number
+* fieldName : string
+* filePath : string
+  * Path to file being attached
+
+---
+
+#### deleteFile(viewId, recordId, fieldName)
+_Delete file from record._
+
+Parameters:
+* viewId : number
+* recordId : number
+* fieldName : string
+
+---
 
 
 ## Additional Information

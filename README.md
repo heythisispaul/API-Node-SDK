@@ -7,8 +7,6 @@ Login to your Trackvia account and navigate to https://go.trackvia.com/#/my-info
 ##### Install via npm:
 `npm install trackvia-api`
 
-or
-
 ##### Include the source directly
 Include the `build/trackvia-api.js` into your project.
 
@@ -17,7 +15,7 @@ Create an instance of the Trackvia api with your API key:
 var TrackviaAPI = require('trackvia-api'); // if installed through npm
 var TrackviaAPI = require('./path/to/trackvia-api.js'); // if include manually
 
-var api = TrackviaAPI('YOUR KEY HERE');
+var api = new TrackviaAPI('YOUR KEY HERE');
 ```
 
 ## Authenticating

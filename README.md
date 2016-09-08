@@ -30,7 +30,7 @@ These Promises will resolve to an object (JSON response from the request), excep
 ---
 
 
-#### login
+#### login(username, password)
 _Authenticates as specified user._
 
 Parameters:
@@ -40,14 +40,14 @@ Parameters:
 
 ---
 
-#### getApps
+#### getApps()
 _Gets all apps available._
 
 Parameters: _none_
 
 ---
 
-#### getAppByName
+#### getAppByName(name)
 _Get an app by name._
 
 Parameters:
@@ -55,11 +55,11 @@ Parameters:
 
 ---
 
-#### getUsers
+#### getUsers([paging])
 _Get all users, optionally paged._
 
 Parameters:
-* paging : object
+* [paging : object]
   * Properties:
     * start : number
       * Starting index for paging.
@@ -67,6 +67,21 @@ Parameters:
       * Page size.
 
 ---
+
+#### addUser(userInfo)
+_Add new user._
+Parameters:
+* userInfo: object
+  * Properties:
+    * email : string
+    * firstName : string
+    * lastName : string
+
+---
+
+#### getViews()
+_Get all views._
+Parameters: _none_
 
 
 ## Additional Information

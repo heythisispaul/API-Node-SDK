@@ -1,5 +1,5 @@
 # API-Node-SDK
-Node.js SDK for working with application data in TrackVia.
+Node SDK for working with application data in TrackVia.
 
 ## Getting Started
 Login to your Trackvia account and navigate to https://go.trackvia.com/#/my-info. Copy down the API key.

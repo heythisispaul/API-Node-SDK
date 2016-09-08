@@ -24,23 +24,51 @@ api.login('myTrackviaAccount@gmail.com', 'myPassword')
 ```
 
 ## Methods
+All methods return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+These Promises will resolve to an object (JSON response from the request), except for files, which will resolve to a string of the binary representation of the file.
+
+---
+
+
 #### login
 _Authenticates as specified user._
 
 Parameters:
-* username : string - Username of Trackvia account.
+* username : string
+  * Username of Trackvia account.
 * password : string
 
-Returns: Promise<Object>
+---
 
 #### getApps
 _Gets all apps available._
 
 Parameters: _none_
 
-Returns: Promise<Object>
+---
+
+#### getAppByName
+_Get an app by name._
+
+Parameters:
+* name : string
+
+---
+
+#### getUsers
+_Get all users, optionally paged._
+
+Parameters:
+* paging : object
+  * Properties:
+    * start : number
+      * Starting index for paging.
+    * max : number
+      * Page size.
+
+---
 
 
 ## Additional Information
 For additional information visit https://developer.trackvia.com/.
-Note that the endpoints explained in the [docs](https://developer.trackvia.com/livedocs) is the public api itself. This library is a wrapper around those endpoints to make development easier.
+Note that the endpoints explained in the [docs](https://developer.trackvia.com/livedocs) are from the public api itself. This library is a wrapper around those endpoints to make development easier.

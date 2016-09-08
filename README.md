@@ -4,11 +4,18 @@ Node SDK for working with application data in TrackVia.
 ## Getting Started
 Login to your Trackvia account and navigate to https://go.trackvia.com/#/my-info. Copy down the API key.
 
+##### Install via npm:
+`npm install trackvia-api`
+
+or
+
+##### Include the source directly
 Include the `build/trackvia-api.js` into your project.
 
 Create an instance of the Trackvia api with your API key:
 ```javascript
-var TrackviaAPI = require('./path/to/trackvia-api.js');
+var TrackviaAPI = require('trackvia-api'); // if installed through npm
+var TrackviaAPI = require('./path/to/trackvia-api.js'); // if include manually
 
 var api = TrackviaAPI('YOUR KEY HERE');
 ```

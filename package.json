@@ -1,8 +1,8 @@
 {
-  "name": "api-node-sdk",
+  "name": "trackvia-api",
   "version": "1.0.0",
-  "description": "Node SDK for Trackvia'a openapi.",
-  "main": "index.js",
+  "description": "Node SDK for Trackvia's openapi.",
+  "main": "build/trackvia-api.js",
   "scripts": {
     "dev": "webpack --watch",
     "build": "webpack",

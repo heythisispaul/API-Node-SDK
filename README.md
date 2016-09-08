@@ -26,14 +26,18 @@ api.login('myTrackviaAccount@gmail.com', 'myPassword')
 ## Methods
 #### login
 _Authenticates as specified user._
+
 Parameters:
 * username : string - Username of Trackvia account.
 * password : string
+
 Returns: Promise<Object>
 
 #### getApps
 _Gets all apps available._
+
 Parameters: _none_
+
 Returns: Promise<Object>
 
 

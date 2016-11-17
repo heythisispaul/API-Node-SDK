@@ -5,8 +5,6 @@ var request = require('request');
 
 var auth = require('./auth.js');
 
-global.__tv_host = 'https://go.trackvia.com:443';
-
 var getDefaultOptions = () => {
     return {
         requiresAuth: true,

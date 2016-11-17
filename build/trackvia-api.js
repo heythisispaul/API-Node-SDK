@@ -72,11 +72,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @param {String} apikey
 	     */
 	    function TrackviaAPI(userKey) {
+	        var host = arguments.length <= 1 || arguments[1] === undefined ? 'https://go.trackvia.com:443' : arguments[1];
+
 	        _classCallCheck(this, TrackviaAPI);
 
 	        if (!userKey) {
 	            throw new Error('Must provide API key to TRackviaAPI constructor');
 	        }
+
+	        global.__tv_host = host;
 
 	        auth.setUserKey(userKey);
 	    }
@@ -34003,8 +34007,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	// require('request-debug')(request);
 
 	var auth = __webpack_require__(128);
-
-	global.__tv_host = 'https://go.trackvia.com:443';
 
 	var getDefaultOptions = function getDefaultOptions() {
 	    return {

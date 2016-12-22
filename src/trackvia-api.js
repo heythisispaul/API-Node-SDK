@@ -459,6 +459,22 @@ class TrackviaAPI {
             throwError(code, `Failed to delete file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
         });;
     }
+
+    /**
+     * Get access token for authentication.
+     * @returns string
+     */
+    getAccessToken() {
+        return auth.getAccessToken();
+    }
+
+    /**
+     * Get user key for authentication.
+     * @returns string
+     */
+    getUserKey() {
+        return auth.getUserKey();
+    }
 }
 
 function throwError(statusCode, message) {

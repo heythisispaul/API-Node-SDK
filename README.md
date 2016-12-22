@@ -203,6 +203,14 @@ Parameters:
 
 ---
 
+#### getAccessToken()
+_Get access token for authentication._
+
+---
+
+#### getUserKey()
+_Get user key for authentication._
+
 
 ## Additional Information
 For additional information visit https://developer.trackvia.com/.

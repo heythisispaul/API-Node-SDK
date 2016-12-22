@@ -538,6 +538,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	                throwError(code, 'Failed to delete file. View: ' + viewId + '  Record: ' + recordId + '  Field Name: ' + fieldName);
 	            });;
 	        }
+
+	        /**
+	         * Get access token for authentication.
+	         * @returns string
+	         */
+
+	    }, {
+	        key: 'getAccessToken',
+	        value: function getAccessToken() {
+	            return auth.getAccessToken();
+	        }
+
+	        /**
+	         * Get user key for authentication.
+	         * @returns string
+	         */
+
+	    }, {
+	        key: 'getUserKey',
+	        value: function getUserKey() {
+	            return auth.getUserKey();
+	        }
 	    }]);
 
 	    return TrackviaAPI;

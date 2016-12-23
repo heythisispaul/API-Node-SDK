@@ -146,6 +146,18 @@ Parameters:
 
 ---
 
+#### updateRecords(accountId, appId, tableId, recordData)
+_Batch Update existing records._
+
+Parameters:
+* accountId : number
+* appId : number
+* tableId : number
+* recordData : object
+  * { 'data': [{id: 123, value: 'newValue', type: 'currency', fieldMetaId: '456'}], recordIds: [1, 2, 3] }
+
+---
+
 #### deleteAllRecordsInView(viewId)
 _Delete all records in a view._
 

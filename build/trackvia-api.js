@@ -369,6 +369,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
+	         * Batch update records
+	         * @param {Number} accountId
+	         * @param {Number} appId
+	         * @param {Number} tableId
+	         * @param {Object} recordData
+	         */
+
+	    }, {
+	        key: 'updateRecords',
+	        value: function updateRecords(accountId, appId, tableId, recordData) {
+	            return tvRequest.makeRequest({
+	                url: __tv_host + ('/accounts/' + accountId + '/apps/' + appId + '/tables/' + tableId + '/records'),
+	                method: 'PUT',
+	                json: true,
+	                headers: {
+	                    'Authorization': 'Bearer ' + auth.getAccessToken()
+	                },
+	                body: recordData
+	            }, { querystring: true }).then(function (res) {
+	                return res;
+	            }).catch(function (code) {
+	                throwError(code, 'Failed to update records.');
+	            });
+	        }
+
+	        /**
 	         * Delete all records in a view.
 	         * @param {Number} viewId
 	         * @returns Promise<Object>

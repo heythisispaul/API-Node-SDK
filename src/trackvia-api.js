@@ -293,6 +293,31 @@ class TrackviaAPI {
     }
 
     /**
+     * Batch update records
+     * @param {Number} accountId
+     * @param {Number} appId
+     * @param {Number} tableId
+     * @param {Object} recordData
+     */
+    updateRecords(accountId, appId, tableId, recordData) {
+        return tvRequest.makeRequest({
+            url: __tv_host + `/accounts/${accountId}/apps/${appId}/tables/${tableId}/records`,
+            method: 'PUT',
+            json: true,
+            headers: {
+                'Authorization': `Bearer ${auth.getAccessToken()}`
+            },
+            body: recordData
+        }, { querystring: true })
+        .then((res) => {
+            return res;
+        })
+        .catch((code) => {
+            throwError(code, `Failed to update records.`);
+        });
+    }
+
+    /**
      * Delete all records in a view.
      * @param {Number} viewId
      * @returns Promise<Object>

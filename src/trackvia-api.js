@@ -403,8 +403,8 @@ class TrackviaAPI {
         }
 
         return tvRequest.makeRequest(requestDetails, { raw: true })
-        .then((res) => {
-            return res;
+        .then((body, res) => {
+            return {"body": body, "response": res};
         })
         .catch((code) => {
             throwError(code, `Failed to get file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);

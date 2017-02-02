@@ -483,8 +483,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                requestDetails.qs.maxDimension = options.maxDimension;
 	            }
 
-	            return tvRequest.makeRequest(requestDetails, { raw: true }).then(function (res) {
-	                return res;
+	            return tvRequest.makeRequest(requestDetails, { raw: true }).then(function (body, res) {
+	                return { "body": body, "response": res };
 	            }).catch(function (code) {
 	                throwError(code, 'Failed to get file. View: ' + viewId + '  Record: ' + recordId + '  Field Name: ' + fieldName);
 	            });
@@ -38444,7 +38444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 
 	                    if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' || options.raw) {
-	                        resolve(body);
+	                        resolve(body, res);
 	                    } else if (typeof body === 'string') {
 	                        resolve(JSON.parse(body));
 	                    } else {

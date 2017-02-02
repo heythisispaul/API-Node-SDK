@@ -483,8 +483,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                requestDetails.qs.maxDimension = options.maxDimension;
 	            }
 
-	            return tvRequest.makeRequest(requestDetails, { raw: true }).then(function (body, res) {
-	                return { "body": body, "response": res };
+	            return tvRequest.makeRequest(requestDetails, { raw: true, fullResponse: true }).then(function (response) {
+	                return response;
 	            }).catch(function (code) {
 	                throwError(code, 'Failed to get file. View: ' + viewId + '  Record: ' + recordId + '  Field Name: ' + fieldName);
 	            });
@@ -38443,8 +38443,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        reject(res.statusCode);
 	                    }
 
-	                    if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' || options.raw) {
-	                        resolve(body, res);
+	                    if (options.fullResponse) {
+	                        var response = { "body": body, "response": res };
+	                        resolve(response);
+	                    } else if ((typeof body === 'undefined' ? 'undefined' : _typeof(body)) === 'object' || options.raw) {
+	                        resolve(body);
 	                    } else if (typeof body === 'string') {
 	                        resolve(JSON.parse(body));
 	                    } else {

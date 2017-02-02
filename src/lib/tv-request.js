@@ -48,8 +48,12 @@ class tvRequest {
                     reject(res.statusCode)
                 }
 
-                if(typeof body === 'object' || options.raw) {
-                    resolve(body, res);
+                if(options.fullResponse) {
+                    var response = {"body": body, "response": res};
+                    resolve(response);
+                }
+                else if(typeof body === 'object' || options.raw) {
+                    resolve(body);
                 } else if(typeof body === 'string') {
                     resolve(JSON.parse(body));
                 } else {

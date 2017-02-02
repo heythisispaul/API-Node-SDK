@@ -49,7 +49,7 @@ class tvRequest {
                 }
 
                 if(typeof body === 'object' || options.raw) {
-                    resolve(body);
+                    resolve(body, res);
                 } else if(typeof body === 'string') {
                     resolve(JSON.parse(body));
                 } else {

@@ -484,6 +484,14 @@ class TrackviaAPI {
             throwError(code, `Failed to delete file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
         });;
     }
+    
+    /**
+     * Set access token for authentication.
+     * @returns string
+     */
+    setAccessToken(accessToken) {
+        auth.setAccessToken(accessToken);
+    }
 
     /**
      * Get access token for authentication.

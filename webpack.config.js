@@ -1,5 +1,5 @@
 module.exports = {
-    target: 'node',
+    target: 'web',
     context: __dirname,
     entry: {
         'trackvia-api': './src/trackvia-api'
@@ -7,7 +7,7 @@ module.exports = {
     output: {
         path: __dirname + '/build',
         filename: '[name].js',
-        library: 'trackvia-api',
+        library: 'trackviaAPI',
         libraryTarget: 'umd',
         umdNamedDefine: true
     },

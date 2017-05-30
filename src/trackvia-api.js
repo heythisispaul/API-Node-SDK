@@ -402,9 +402,9 @@ class TrackviaAPI {
             requestDetails.qs.maxDimension = options.maxDimension;
         }
 
-        return tvRequest.makeRequest(requestDetails, { raw: true })
-        .then((res) => {
-            return res;
+        return tvRequest.makeRequest(requestDetails, { raw: true, fullResponse:true })
+        .then((response) => {
+            return response;
         })
         .catch((code) => {
             throwError(code, `Failed to get file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
@@ -483,6 +483,14 @@ class TrackviaAPI {
         .catch((code) => {
             throwError(code, `Failed to delete file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
         });;
+    }
+    
+    /**
+     * Set access token for authentication.
+     * @returns string
+     */
+    setAccessToken(accessToken) {
+        auth.setAccessToken(accessToken);
     }
 
     /**

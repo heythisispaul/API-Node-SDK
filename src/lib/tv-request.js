@@ -9,7 +9,8 @@ var getDefaultOptions = () => {
     return {
         requiresAuth: true,
         form: false,
-        querystring: false
+        querystring: false,
+        withCredentials: false
     };
 };
 
@@ -26,6 +27,7 @@ class tvRequest {
             }
         }
 
+        
 
         if(options.requiresAuth) {
             var paramType;

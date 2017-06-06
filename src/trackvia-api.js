@@ -101,13 +101,7 @@ class TrackviaAPI {
      * @returns Promise<Object>
      */
     getViews() {
-        return tvRequest.get('/openapi/views')
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed to get views');
-        });
+        return tvRequest.get('/openapi/views');
     }
 
     /**

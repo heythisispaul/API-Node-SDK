@@ -305,13 +305,7 @@ class TrackviaAPI {
             requestDetails.qs.maxDimension = options.maxDimension;
         }
 
-        return tvRequest.makeRequest(requestDetails, { raw: true, fullResponse:true })
-        .then((response) => {
-            return response;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
-        });
+        return tvRequest.makeRequest(requestDetails, { raw: true, fullResponse:true });
     }
 
     /**

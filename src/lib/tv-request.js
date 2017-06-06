@@ -27,7 +27,7 @@ class tvRequest {
             }
         }
 
-        
+
 
         if(options.requiresAuth) {
             var paramType;
@@ -41,13 +41,13 @@ class tvRequest {
             requestDetails[paramType].access_token = auth.getAccessToken();
             requestDetails[paramType].user_key = auth.getUserKey();
         }
-        
+
 
         return new Promise((resolve, reject) => {
             request(requestDetails, (err, res, body) => {
 
                 if(isErrorResponse(res.statusCode)) {
-                    reject(res.statusCode)
+                    reject(res);
                 }
 
                 if(options.fullResponse) {
@@ -71,7 +71,6 @@ class tvRequest {
             method: 'GET',
             qs: params
         };
-
         return this.makeRequest(requestDetails, options);
     }
 

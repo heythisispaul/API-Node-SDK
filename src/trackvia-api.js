@@ -60,13 +60,7 @@ class TrackviaAPI {
      * @return {Promise<Object>}
      */
     getApps() {
-        return tvRequest.get('/openapi/apps')
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed to get apps.');
-        });
+        return tvRequest.get('/openapi/apps');
     }
 
     /**
@@ -484,7 +478,7 @@ class TrackviaAPI {
             throwError(code, `Failed to delete file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
         });;
     }
-    
+
     /**
      * Set access token for authentication.
      * @returns string
@@ -511,7 +505,7 @@ class TrackviaAPI {
 }
 
 function throwError(statusCode, message) {
-    throw new Error(`${message} Response Code: ${statusCode}`);
+    throw new Error(`${message} Response Code: ${JSON.stringify(statusCode)}`);
 }
 
 module.exports =  TrackviaAPI;

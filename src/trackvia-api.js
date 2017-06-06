@@ -210,13 +210,7 @@ class TrackviaAPI {
             method: 'PUT',
             json: true,
             body: recordRequestData
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to update record: ${recordId}`);
-        });
+        }, { querystring: true });
     }
 
     /**

@@ -134,12 +134,6 @@ class TrackviaAPI {
                 q: query,
                 start: paging.start,
                 max: paging.max
-            })
-            .then((res) => {
-                return res;
-            })
-            .catch((code) => {
-                throwError(code, `Failed to get view: ${id}`)
             });
         } else {
             return tvRequest.get(`/openapi/views/${id}`, {

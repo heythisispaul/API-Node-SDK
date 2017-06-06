@@ -39,20 +39,7 @@ class TrackviaAPI {
             requiresAuth: false
         }
 
-        return tvRequest.post('/oauth/token', params, options)
-        .then((res) => {
-            if(res.access_token) {
-                auth.setAccessToken(res.access_token);
-                auth.setRefreshToken(res.refresh_token, res.expires_in);
-            } else {
-                throw new Error('Access Token not returned from login');
-            }
-
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed login.');
-        });
+        return tvRequest.post('/oauth/token', params, options);
     }
 
     /**

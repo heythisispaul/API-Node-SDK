@@ -93,13 +93,7 @@ class TrackviaAPI {
             throw new Error('lastName must be supplied when adding user');
         }
 
-        return tvRequest.post('/openapi/users', userInfo, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to add user: ${userInfo.email}`);
-        });
+        return tvRequest.post('/openapi/users', userInfo, { querystring: true });
     }
 
     /**

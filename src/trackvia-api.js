@@ -139,13 +139,7 @@ class TrackviaAPI {
             return tvRequest.get(`/openapi/views/${id}`, {
                 start: paging.start,
                 max: paging.max
-            })
-            .then((res) => {
-                return res;
-            })
-            .catch((code) => {
-                throwError(code, `Failed to get view: ${id}`)
-            });;
+            });
         }
     }
 
@@ -163,13 +157,7 @@ class TrackviaAPI {
             throw new Error('record id must be supplied to getRecord');
         }
 
-        return tvRequest.get(`/openapi/views/${viewId}/records/${recordId}`)
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get record: ${recordId}`);
-        });
+        return tvRequest.get(`/openapi/views/${viewId}/records/${recordId}`);
     }
 
     /**

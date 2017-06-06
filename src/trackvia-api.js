@@ -74,12 +74,6 @@ class TrackviaAPI {
         return tvRequest.get('/openapi/users', {
             start: paging.start,
             max: paging.max
-        })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed to get users.');
         });
     }
 

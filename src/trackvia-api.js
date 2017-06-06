@@ -184,13 +184,7 @@ class TrackviaAPI {
             method: 'POST',
             json: true,
             body: recordRequestData
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to add record. View id: ${viewId}`);
-        });
+        }, { querystring: true });
     }
 
     /**

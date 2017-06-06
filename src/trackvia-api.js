@@ -367,13 +367,7 @@ class TrackviaAPI {
             method: 'DELETE'
         };
 
-        return tvRequest.makeRequest(requestDetails, { querystring: true, raw: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to delete file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
-        });;
+        return tvRequest.makeRequest(requestDetails, { querystring: true, raw: true });
     }
 
     /**

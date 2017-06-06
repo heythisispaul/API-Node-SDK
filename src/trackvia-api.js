@@ -60,13 +60,7 @@ class TrackviaAPI {
             throw new Error('Must provide name argument for getApp');
         }
 
-        return tvRequest.get('/openapi/apps', { name: name })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get app: ${name}`);
-        });
+        return tvRequest.get('/openapi/apps', { name: name });
     }
 
     /**

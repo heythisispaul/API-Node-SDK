@@ -229,13 +229,7 @@ class TrackviaAPI {
                 'Authorization': `Bearer ${auth.getAccessToken()}`
             },
             body: recordData
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to update records.`);
-        });
+        }, { querystring: true });
     }
 
     /**

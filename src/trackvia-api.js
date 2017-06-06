@@ -340,13 +340,7 @@ class TrackviaAPI {
             }
         };
 
-        return tvRequest.makeRequest(requestDetails, { raw: true, querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to attach file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
-        });
+        return tvRequest.makeRequest(requestDetails, { raw: true, querystring: true });
     }
 
 

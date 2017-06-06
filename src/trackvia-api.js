@@ -116,12 +116,6 @@ class TrackviaAPI {
 
         return tvRequest.get('/openapi/views', {
             name: name
-        })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get view: ${name}`);
         });
     }
 

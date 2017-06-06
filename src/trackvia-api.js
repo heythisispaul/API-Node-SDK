@@ -267,13 +267,7 @@ class TrackviaAPI {
             url: __tv_host + `/openapi/views/${viewId}/records/${recordId}`,
             method: 'DELETE',
             json: true
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to delete record: ${recordId}`);
-        });
+        }, { querystring: true });
     }
 
     /**

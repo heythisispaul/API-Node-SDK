@@ -46,9 +46,13 @@ class tvRequest {
         return new Promise((resolve, reject) => {
             request(requestDetails, (err, res, body) => {
 
-                if(isErrorResponse(res.statusCode)) {
-                    reject(res);
-                }
+              if (err) {
+                return reject(err);
+              }
+
+              if(isErrorResponse(res.statusCode)) {
+                  reject(res);
+              }
 
                 if(options.fullResponse) {
                     var response = {"body": body, "response": res};

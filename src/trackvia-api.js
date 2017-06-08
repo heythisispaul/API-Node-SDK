@@ -26,21 +26,34 @@ class TrackviaAPI {
      * @param {String} password
      * @return {Promise<Object>}
      */
-    login(username, password) {
-        var params = {
-            client_id: 'TrackViaAPI',
-            grant_type: 'password',
-            username: username,
-            password: password
-        };
+     login(username, password) {
+         var params = {
+             client_id: 'TrackViaAPI',
+             grant_type: 'password',
+             username: username,
+             password: password
+         };
 
-        var options = {
-            form: true,
-            requiresAuth: false
-        }
+         var options = {
+             form: true,
+             requiresAuth: false
+         }
 
-        return tvRequest.post('/oauth/token', params, options);
-    }
+         return tvRequest.post('/oauth/token', params, options)
+         .then((res) => {
+             if(res.access_token) {
+                 auth.setAccessToken(res.access_token);
+                 auth.setRefreshToken(res.refresh_token, res.expires_in);
+             } else {
+                 throw new Error('Access Token not returned from login');
+             }
+
+             return res;
+         })
+         .catch((code) => {
+             throwError(code, 'Failed login.');
+         });
+     }
 
     /**
      * Get all apps available.
@@ -59,7 +72,6 @@ class TrackviaAPI {
         if(!name) {
             throw new Error('Must provide name argument for getApp');
         }
-
         return tvRequest.get('/openapi/apps', { name: name });
     }
 
@@ -339,7 +351,6 @@ class TrackviaAPI {
                 file: fileStream
             }
         };
-
         return tvRequest.makeRequest(requestDetails, { raw: true, querystring: true });
     }
 

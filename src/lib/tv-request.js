@@ -51,7 +51,7 @@ class tvRequest {
               }
 
               if(isErrorResponse(res.statusCode)) {
-                  reject(res);
+                  return reject(res);
               }
 
                 if(options.fullResponse) {

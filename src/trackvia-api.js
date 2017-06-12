@@ -69,9 +69,6 @@ class TrackviaAPI {
      * @return {Promise<Object>}
      */
     getAppByName(name) {
-        if(!name) {
-            throw new Error('Must provide name argument for getApp');
-        }
         return tvRequest.get('/openapi/apps', { name: name });
     }
 

@@ -34216,7 +34216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'getRefreshToken',
 	        value: function getRefreshToken() {
-	            return this.refreshToken();
+	            return this.refreshToken;
 	        }
 	    }, {
 	        key: 'setRefreshToken',

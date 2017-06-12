@@ -19,7 +19,7 @@ class Auth {
         return this.accessToken;
     }
     getRefreshToken() {
-        return this.refreshToken();
+        return this.refreshToken;
     }
 
     setRefreshToken(refreshToken, secondsUntilExpiration) {

@@ -501,6 +501,10 @@ class TrackviaAPI {
         return auth.getAccessToken();
     }
 
+    getRefreshToken() {
+        return auth.getRefreshToken();
+    }
+
     /**
      * Get user key for authentication.
      * @returns string

@@ -34214,6 +34214,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return this.accessToken;
 	        }
 	    }, {
+	        key: 'getRefreshToken',
+	        value: function getRefreshToken() {
+	            return this.refreshToken();
+	        }
+	    }, {
 	        key: 'setRefreshToken',
 	        value: function setRefreshToken(refreshToken, secondsUntilExpiration) {
 	            var _this = this;

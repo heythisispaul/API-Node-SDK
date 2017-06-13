@@ -26,47 +26,41 @@ class TrackviaAPI {
      * @param {String} password
      * @return {Promise<Object>}
      */
-    login(username, password) {
-        var params = {
-            client_id: 'TrackViaAPI',
-            grant_type: 'password',
-            username: username,
-            password: password
-        };
+     login(username, password) {
+         var params = {
+             client_id: 'TrackViaAPI',
+             grant_type: 'password',
+             username: username,
+             password: password
+         };
 
-        var options = {
-            form: true,
-            requiresAuth: false
-        }
+         var options = {
+             form: true,
+             requiresAuth: false
+         }
 
-        return tvRequest.post('/oauth/token', params, options)
-        .then((res) => {
-            if(res.access_token) {
-                auth.setAccessToken(res.access_token);
-                auth.setRefreshToken(res.refresh_token, res.expires_in);
-            } else {
-                throw new Error('Access Token not returned from login');
-            }
+         return tvRequest.post('/oauth/token', params, options)
+         .then((res) => {
+             if(res.access_token) {
+                 auth.setAccessToken(res.access_token);
+                 auth.setRefreshToken(res.refresh_token, res.expires_in);
+             } else {
+                 throw new Error('Access Token not returned from login');
+             }
 
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed login.');
-        });
-    }
+             return res;
+         })
+         .catch((code) => {
+             throwError(code, 'Failed login.');
+         });
+     }
 
     /**
      * Get all apps available.
      * @return {Promise<Object>}
      */
     getApps() {
-        return tvRequest.get('/openapi/apps')
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed to get apps.');
-        });
+        return tvRequest.get('/openapi/apps');
     }
 
     /**
@@ -75,17 +69,7 @@ class TrackviaAPI {
      * @return {Promise<Object>}
      */
     getAppByName(name) {
-        if(!name) {
-            throw new Error('Must provide name argument for getApp');
-        }
-
-        return tvRequest.get('/openapi/apps', { name: name })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get app: ${name}`);
-        });
+        return tvRequest.get('/openapi/apps', { name: name });
     }
 
     /**
@@ -99,12 +83,6 @@ class TrackviaAPI {
         return tvRequest.get('/openapi/users', {
             start: paging.start,
             max: paging.max
-        })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed to get users.');
         });
     }
 
@@ -124,13 +102,7 @@ class TrackviaAPI {
             throw new Error('lastName must be supplied when adding user');
         }
 
-        return tvRequest.post('/openapi/users', userInfo, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to add user: ${userInfo.email}`);
-        });
+        return tvRequest.post('/openapi/users', userInfo, { querystring: true });
     }
 
     /**
@@ -138,13 +110,7 @@ class TrackviaAPI {
      * @returns Promise<Object>
      */
     getViews() {
-        return tvRequest.get('/openapi/views')
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, 'Failed to get views');
-        });
+        return tvRequest.get('/openapi/views');
     }
 
     /**
@@ -159,12 +125,6 @@ class TrackviaAPI {
 
         return tvRequest.get('/openapi/views', {
             name: name
-        })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get view: ${name}`);
         });
     }
 
@@ -183,24 +143,12 @@ class TrackviaAPI {
                 q: query,
                 start: paging.start,
                 max: paging.max
-            })
-            .then((res) => {
-                return res;
-            })
-            .catch((code) => {
-                throwError(code, `Failed to get view: ${id}`)
             });
         } else {
             return tvRequest.get(`/openapi/views/${id}`, {
                 start: paging.start,
                 max: paging.max
-            })
-            .then((res) => {
-                return res;
-            })
-            .catch((code) => {
-                throwError(code, `Failed to get view: ${id}`)
-            });;
+            });
         }
     }
 
@@ -218,13 +166,7 @@ class TrackviaAPI {
             throw new Error('record id must be supplied to getRecord');
         }
 
-        return tvRequest.get(`/openapi/views/${viewId}/records/${recordId}`)
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get record: ${recordId}`);
-        });
+        return tvRequest.get(`/openapi/views/${viewId}/records/${recordId}`);
     }
 
     /**
@@ -251,13 +193,7 @@ class TrackviaAPI {
             method: 'POST',
             json: true,
             body: recordRequestData
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to add record. View id: ${viewId}`);
-        });
+        }, { querystring: true });
     }
 
     /**
@@ -283,13 +219,7 @@ class TrackviaAPI {
             method: 'PUT',
             json: true,
             body: recordRequestData
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to update record: ${recordId}`);
-        });
+        }, { querystring: true });
     }
 
     /**
@@ -308,13 +238,7 @@ class TrackviaAPI {
                 'Authorization': `Bearer ${auth.getAccessToken()}`
             },
             body: recordData
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to update records.`);
-        });
+        }, { querystring: true });
     }
 
     /**
@@ -331,13 +255,7 @@ class TrackviaAPI {
             url: __tv_host + `/openapi/views/${viewId}/records/all`,
             method: 'DELETE',
             json: true
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to delete all records in view: ${viewId}`);
-        });
+        }, { querystring: true });
     }
 
     /**
@@ -358,13 +276,7 @@ class TrackviaAPI {
             url: __tv_host + `/openapi/views/${viewId}/records/${recordId}`,
             method: 'DELETE',
             json: true
-        }, { querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to delete record: ${recordId}`);
-        });
+        }, { querystring: true });
     }
 
     /**
@@ -402,13 +314,7 @@ class TrackviaAPI {
             requestDetails.qs.maxDimension = options.maxDimension;
         }
 
-        return tvRequest.makeRequest(requestDetails, { raw: true, fullResponse:true })
-        .then((response) => {
-            return response;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to get file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
-        });
+        return tvRequest.makeRequest(requestDetails, { raw: true, fullResponse:true });
     }
 
     /**
@@ -442,14 +348,7 @@ class TrackviaAPI {
                 file: fileStream
             }
         };
-
-        return tvRequest.makeRequest(requestDetails, { raw: true, querystring: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to attach file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
-        });
+        return tvRequest.makeRequest(requestDetails, { raw: true, querystring: true });
     }
 
 
@@ -476,15 +375,9 @@ class TrackviaAPI {
             method: 'DELETE'
         };
 
-        return tvRequest.makeRequest(requestDetails, { querystring: true, raw: true })
-        .then((res) => {
-            return res;
-        })
-        .catch((code) => {
-            throwError(code, `Failed to delete file. View: ${viewId}  Record: ${recordId}  Field Name: ${fieldName}`);
-        });;
+        return tvRequest.makeRequest(requestDetails, { querystring: true, raw: true });
     }
-    
+
     /**
      * Set access token for authentication.
      * @returns string
@@ -515,7 +408,7 @@ class TrackviaAPI {
 }
 
 function throwError(statusCode, message) {
-    throw new Error(`${message} Response Code: ${statusCode}`);
+    throw new Error(`${message} Response Code: ${JSON.stringify(statusCode)}`);
 }
 
 module.exports =  TrackviaAPI;

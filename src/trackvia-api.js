@@ -1,5 +1,6 @@
 var request = require('request');
 var fs = require('fs');
+var requestDebug = require('request-debug');
 
 var tvRequest = require('./lib/tv-request.js'),
     auth = require('./lib/auth.js');
@@ -511,6 +512,10 @@ class TrackviaAPI {
      */
     getUserKey() {
         return auth.getUserKey();
+    }
+
+    enableDebug() {
+        requestDebug(request);
     }
 }
 

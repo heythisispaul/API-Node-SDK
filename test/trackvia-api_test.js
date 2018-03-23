@@ -15,47 +15,70 @@ describe('TrackVia', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TRackviaAPI constructor');
         });
     });
-    describe('Account Methods', () => {
-        describe('login method', () => {
-            it('should login with valid username and password', () => {
-                return api.login(USERNAME, PASSWORD)
-                    .then(() => {
-                        expect(api.getAccessToken()).to.not.be.undefined;
-                    })
-            });
-            it('should throw error with incorrect username', () => {
-                return api.login('notmyusername', PASSWORD)
-                    .catch((err) => {
-                        expect(err).to.be.instanceOf(Error);
-                    });
-            });
-            it('should throw error with incorrect password', () => {
-                return api.login(USERNAME, 'notmypassword')
-                    .catch((err) => {
-                        expect(err).to.be.instanceOf(Error);
-                    });
-            });
-            it('should throw error with no username', () => {
-                return api.login(PASSWORD)
-                    .catch((err) => {
-                        expect(err).to.be.instanceOf(Error);
-                    });
-            });
-            it('should not login with no password', () => {
-                return api.login(USERNAME)
-                    .catch((err) => {
-                        expect(err).to.be.instanceOf(Error);
-                    });
-            });
-            it('should not login with no username and password', () => {
-                return api.login()
-                    .catch((err) => {
-                        expect(err).to.be.instanceOf(Error);
-                    });
-            });
+    describe('login method', () => {
+        it('should login with valid username and password', () => {
+            return api.login(USERNAME, PASSWORD)
+                .then(() => {
+                    expect(api.getAccessToken()).to.not.be.undefined;
+                })
         });
-        describe('getApps method', () => {
+        it('should throw error with incorrect username', () => {
+            return api.login('notmyusername', PASSWORD)
+                .catch((err) => {
+                    expect(err).to.be.instanceOf(Error);
+                });
+        });
+        it('should throw error with incorrect password', () => {
+            return api.login(USERNAME, 'notmypassword')
+                .catch((err) => {
+                    expect(err).to.be.instanceOf(Error);
+                });
+        });
+        it('should throw error with no username', () => {
+            return api.login(PASSWORD)
+                .catch((err) => {
+                    expect(err).to.be.instanceOf(Error);
+                });
+        });
+        it('should not login with no password', () => {
+            return api.login(USERNAME)
+                .catch((err) => {
+                    expect(err).to.be.instanceOf(Error);
+                });
+        });
+        it('should not login with no username and password', () => {
+            return api.login()
+                .catch((err) => {
+                    expect(err).to.be.instanceOf(Error);
+                });
+        });
+    });
+    describe('getApps method', () => {
 
+    });
+
+    describe('getUsers method', () => {
+        it('should return array of users', () => {
+            return api.getUsers()
+                .then((results) => {
+                    expect(results.structure).to.have.length.above(0);
+                    expect(results.structure).to.be.a('array');
+                });
+        });
+        it('should return user objects', () => {
+            return api.getUsers()
+                .then(results => {
+                    expect(results.structure[0]).to.be.a('object');
+                    expect(results.structure[0]).to.have.property('name');
+                    expect(results.structure[0]).to.have.property('type');
+                    expect(results.structure[0]).to.have.property('required');
+                    expect(results.structure[0]).to.have.property('unique');
+                    expect(results.structure[0]).to.have.property('canRead');
+                    expect(results.structure[0]).to.have.property('canUpdate');
+                    expect(results.structure[0]).to.have.property('canCreate');
+                    expect(results.structure[0]).to.have.property('relationshipSize');
+                    expect(results.structure[0]).to.have.property('propertyName');
+                })
         });
     });
 });

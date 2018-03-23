@@ -16,21 +16,45 @@ describe('TrackVia', () => {
         });
     });
     describe('Account Methods', () => {
-        describe('login Method', () => {
-            it('should login', () => {
+        describe('login method', () => {
+            it('should login with valid username and password', () => {
                 return api.login(USERNAME, PASSWORD)
                     .then(() => {
                         expect(api.getAccessToken()).to.not.be.undefined;
                     })
             });
-            it('should not login', () => {
+            it('should throw error with incorrect username', () => {
+                return api.login('notmyusername', PASSWORD)
+                    .catch((err) => {
+                        expect(err).to.be.instanceOf(Error);
+                    });
+            });
+            it('should throw error with incorrect password', () => {
                 return api.login(USERNAME, 'notmypassword')
                     .catch((err) => {
                         expect(err).to.be.instanceOf(Error);
                     });
             });
+            it('should throw error with no username', () => {
+                return api.login(PASSWORD)
+                    .catch((err) => {
+                        expect(err).to.be.instanceOf(Error);
+                    });
+            });
+            it('should not login with no password', () => {
+                return api.login(USERNAME)
+                    .catch((err) => {
+                        expect(err).to.be.instanceOf(Error);
+                    });
+            });
+            it('should not login with no username and password', () => {
+                return api.login()
+                    .catch((err) => {
+                        expect(err).to.be.instanceOf(Error);
+                    });
+            });
         });
-        describe('getApps Method', () => {
+        describe('getApps method', () => {
 
         });
     });

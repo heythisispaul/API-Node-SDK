@@ -53,6 +53,37 @@ describe('TrackVia', () => {
                 });
         });
     });
+    describe('Auth Functions', () => {
+        before(() => {
+            return api.login(USERNAME, PASSWORD);
+        });
+        describe('setAccessToken', () => {
+            it('should set access token', () => {
+                api.setAccessToken('abc123');
+                const accessToken = api.getAccessToken();
+                expect(accessToken).to.equal('abc123');
+            });
+        });
+        describe('getAccessToken', () => {
+            it('should return access token', () => {
+                const accessToken = api.getAccessToken();
+                expect(accessToken).to.be.a('string');
+            });
+        });
+        describe('getRefreshToken', () => {
+            it('should return refresh token', () => {
+                const refreshToken = api.getRefreshToken();
+                expect(refreshToken).to.be.a('string');
+            });
+        });
+        describe('getUserKey', () => {
+            it('should return user key', () => {
+                const userKey = api.getUserKey();
+                expect(userKey).to.be.a('string');
+                expect(userKey).to.equal(KEY);
+            });
+        });
+    });
     describe('Interactive Functions', () => {
         before(() => {
             return api.login(USERNAME, PASSWORD);
@@ -224,6 +255,124 @@ describe('TrackVia', () => {
             it('should throw an error without a recordId', () => {
                 const noRecordId = () => api.getRecord(386, undefined);
                 expect(noRecordId).to.throw('record id must be supplied to getRecord');
+            });
+        });
+        describe('addRecord method', () => {
+            it('should add a record', () => {
+                const recordData = {
+                    'TEST FIELD': 'abc123'
+                };
+                return api.addRecord(52, recordData)
+                    .then(results => {
+                        expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
+                        expect(results.totalCount).to.be.above(0);
+                    })
+            });
+            it('should add a record with a link to parent', () => {
+                let parentRecordId;
+                before(() => {
+                    const parentDetails = {
+                        'TEST FIELD': 'abc123'
+                    };
+                    return api.addRecord(52, parentDetails)
+                        .then(results => {
+                            parentRecordId = results.data[0].id;
+                        })
+                });
+
+                const recordData = {
+                    'CHILD TEST FIELD': 'abc123',
+                    'Link to WEB SDK TESTING': parentRecordId
+                };
+                return api.addRecord(53, recordData)
+                    .then(results => {
+                        expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
+                        expect(results.totalCount).to.be.above(0);
+                    })
+            });
+            it('should not add a record with a bad field', () => {
+                const recordData = {
+                    'WONT WORK': 'abc123'
+                };
+                return api.addRecord(52, recordData)
+                    .catch(err => {
+                        expect(err.body.message).to.equal('DENIED!!! - field "WONT WORK" either does not exist or you do not have access to it.');
+                    })
+            });
+        });
+        describe('updateRecord method', () => {
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.updateRecord(undefined, 4, {record: 'data'});
+                expect(noViewId).to.throw('view id must be supplied to updateRecord');
+            });
+            it('should throw error if no record id is supplied', () => {
+                const noRecordId = () => api.updateRecord(52, undefined, {record: 'data'});
+                expect(noRecordId).to.throw('record id must be supplied to updateRecord');
+            });
+        });
+        describe('updateRecords', () => {
+            //not sure how to test the functionality of these API calls
+        });
+        describe('deleteAllRecordsInView', () => {
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.deleteAllRecordsInView();
+                expect(noViewId).to.throw('view id must be supplied to deleteAllRecordsInView');
+            });
+        });
+        describe('deleteRecord method', () => {
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.deleteRecord(undefined, 4);
+                expect(noViewId).to.throw('view id must be supplied to deleteRecord');
+            });
+            it('should throw error if no record id is supplied', () => {
+                const noRecordId = () => api.deleteRecord(52, undefined);
+                expect(noRecordId).to.throw('record id must be supplied to deleteRecord');
+            });
+        });
+        describe('getFile', () => {
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.getFile(undefined, 4, 'Field Name');
+                expect(noViewId).to.throw('view id must be supplied to downloadFile');
+            });
+            it('should throw error if no record id is supplied', () => {
+                const noRecordId = () => api.getFile(52, undefined, 'Field Name');
+                expect(noRecordId).to.throw('record id must be supplied to downloadFile');
+            });
+            it('should throw error if no field name is supplied', () => {
+                const noFieldName = () => api.getFile(52, 4, undefined);
+                expect(noFieldName).to.throw('field name must be supplied to downloadFile');
+            });
+        });
+        describe('attachFile', () => {
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.attachFile(undefined, 4, 'Field Name', 'File Path');
+                expect(noViewId).to.throw('view id must be supplied to attachFile');
+            });
+            it('should throw error if no record id is supplied', () => {
+                const noRecordId = () => api.attachFile(52, undefined, 'Field Name', 'File Path');
+                expect(noRecordId).to.throw('record id must be supplied to attachFile');
+            });
+            it('should throw error if no field name is supplied', () => {
+                const noFieldName = () => api.attachFile(52, 4, undefined, 'File Path');
+                expect(noFieldName).to.throw('field name must be supplied to attachFile');
+            });
+            it('should throw error if no field path is supplied', () => {
+                const noFieldPath = () => api.attachFile(52, 4, 'Field Name', undefined);
+                expect(noFieldPath).to.throw('file path must be supplied to attachFile');
+            });
+        });
+        describe('deleteFile', () => {
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.deleteFile(undefined, 4, 'Field Name');
+                expect(noViewId).to.throw('view id must be supplied to deleteFile');
+            });
+            it('should throw error if no record id is supplied', () => {
+                const noRecordId = () => api.deleteFile(52, undefined, 'Field Name');
+                expect(noRecordId).to.throw('record id must be supplied to deleteFile');
+            });
+            it('should throw error if no field name is supplied', () => {
+                const noFieldName = () => api.deleteFile(52, 4, undefined);
+                expect(noFieldName).to.throw('field name must be supplied to deleteFile');
             });
         });
     });

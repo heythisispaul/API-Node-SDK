@@ -79,7 +79,7 @@ describe('TrackVia', () => {
                 return api.getAppByName('For Testing *** DO NOT DELETE ***')
                     .then(result => {
                         expect(result).to.be.a('array');
-                        expect(result).to.have.length(1);
+                        expect(result).to.have.lengthOf(1);
                     })
             });
             it('should return the matching app record', () => {
@@ -142,7 +142,7 @@ describe('TrackVia', () => {
                 return api.getViewByName('Default WEB SDK TESTING View')
                     .then(results => {
                         expect(results).to.be.a('array');
-                        expect(results).to.have.length(1);
+                        expect(results).to.have.lengthOf(1);
                     })
             });
             it('should return the matching view record', () => {
@@ -158,7 +158,7 @@ describe('TrackVia', () => {
                 expect(missingNameParam).to.Throw(Error, 'name must be supplied when getting view by name');
             });
         });
-        describe('getView method', () => {
+        describe.only('getView method', () => {
             it('should get a view without paging or query', () => {
                 return api.getView(52)
                     .then(results => {
@@ -169,6 +169,38 @@ describe('TrackVia', () => {
                 return api.getView(52, {}, 'abc')
                     .then(results => {
                         expect(results.data).to.have.length.above(0);
+                    })
+            });
+            it('should get a view with paging', () => {
+                const paging = {
+                    start: 0,
+                    max: 1
+                };
+                return api.getView(52, paging)
+                    .then(results => {
+                        expect(results.data).to.have.lengthOf(1);
+                    })
+            });
+            it('should get a view with paging and a query', () => {
+                const paging = {
+                    start: 0,
+                    max: 1
+                };
+                return api.getView(52, paging, 'abc')
+                    .then(results => {
+                        expect(results.data).to.have.lengthOf(1);
+                    })
+            });
+            it('should fail with a viewId', () => {
+                return api.getView() 
+                    .catch(err => {
+                        expect(err).to.be.a('object');
+                    })
+            });
+            it('should not find a bad query', () => {
+                return api.getView(52, {}, 'zzzzz')
+                    .then(results => {
+                        expect(results.data).to.have.lengthOf(0);
                     })
             });
         });

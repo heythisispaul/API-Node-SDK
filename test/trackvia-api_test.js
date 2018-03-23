@@ -301,6 +301,13 @@ describe('TrackVia', () => {
             });
         });
         describe('updateRecord method', () => {
+            it('should update the record', () => {
+                return api.updateRecord(52, 4, {'TEST FIELD': 'new data'})
+                    .then(results => {
+                        expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
+                        expect(results.data[0]['TEST FIELD']).to.equal('new data');
+                    })
+            })
             it('should throw error if no view id is supplied', () => {
                 const noViewId = () => api.updateRecord(undefined, 4, {record: 'data'});
                 expect(noViewId).to.throw('view id must be supplied to updateRecord');
@@ -329,21 +336,25 @@ describe('TrackVia', () => {
                 expect(noRecordId).to.throw('record id must be supplied to deleteRecord');
             });
         });
-        describe('getFile', () => {
-            it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.getFile(undefined, 4, 'Field Name');
-                expect(noViewId).to.throw('view id must be supplied to downloadFile');
-            });
-            it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.getFile(52, undefined, 'Field Name');
-                expect(noRecordId).to.throw('record id must be supplied to downloadFile');
-            });
-            it('should throw error if no field name is supplied', () => {
-                const noFieldName = () => api.getFile(52, 4, undefined);
-                expect(noFieldName).to.throw('field name must be supplied to downloadFile');
-            });
+    });
+    describe('File Methods', () => {
+        let recordId;
+        before(() => {
+            return api.login(USERNAME, PASSWORD);
+        });
+        before(() => {
+            return api.addRecord(52, {'TEST FIELD': 'abc123'})
+                .then(result => {
+                    recordId = result.data[0].id
+                })
         });
         describe('attachFile', () => {
+            it('should attach a file', () => {
+                return api.attachFile(52, recordId, 'Doc Field', __dirname + '/test.pdf')
+                    .then(result => {
+                        expect(JSON.parse(result)).to.have.all.keys(['structure', 'data']);
+                    })
+            });
             it('should throw error if no view id is supplied', () => {
                 const noViewId = () => api.attachFile(undefined, 4, 'Field Name', 'File Path');
                 expect(noViewId).to.throw('view id must be supplied to attachFile');
@@ -361,7 +372,39 @@ describe('TrackVia', () => {
                 expect(noFieldPath).to.throw('file path must be supplied to attachFile');
             });
         });
+        describe('getFile', () => {
+            it('should get a file', () => {
+                return api.getFile(52, recordId, 'Doc Field')
+                    .then(result => {
+                        expect(result).to.not.be.undefined;
+                    })
+            });
+            it('should throw error if no view id is supplied', () => {
+                const noViewId = () => api.getFile(undefined, 4, 'Field Name');
+                expect(noViewId).to.throw('view id must be supplied to downloadFile');
+            });
+            it('should throw error if no record id is supplied', () => {
+                const noRecordId = () => api.getFile(52, undefined, 'Field Name');
+                expect(noRecordId).to.throw('record id must be supplied to downloadFile');
+            });
+            it('should throw error if no field name is supplied', () => {
+                const noFieldName = () => api.getFile(52, 4, undefined);
+                expect(noFieldName).to.throw('field name must be supplied to downloadFile');
+            });
+        });
         describe('deleteFile', () => {
+            it('should delete a file', () => {
+                return api.deleteFile(52, recordId, 'Doc Field')
+                    .then(() => {
+                        return api.getFile(52, recordId, 'Doc Field')
+                            .catch(err => {
+                                const errorBody = JSON.parse(err.body);
+                                expect(errorBody.message).to.equal('The resource you requested could not be found.File does not exist.');
+                                expect(errorBody.name).to.equal('notFound');
+                                expect(errorBody.code).to.equal('404');
+                            })
+                    });
+            });
             it('should throw error if no view id is supplied', () => {
                 const noViewId = () => api.deleteFile(undefined, 4, 'Field Name');
                 expect(noViewId).to.throw('view id must be supplied to deleteFile');

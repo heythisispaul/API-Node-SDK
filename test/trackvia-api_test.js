@@ -54,7 +54,20 @@ describe('TrackVia', () => {
         });
     });
     describe('getApps method', () => {
-
+        it('should return array of apps', () => {
+            return api.getApps()
+                .then(results => {
+                    expect(results).to.be.a('array');
+                    expect(results).to.have.length.above(0);
+                })
+        });
+        it('should return app objects', () => {
+            return api.getApps()
+                .then(results => {
+                    expect(results[0]).to.have.property('name');
+                    expect(results[0]).to.have.property('id');
+                })
+        })
     });
 
     describe('getUsers method', () => {

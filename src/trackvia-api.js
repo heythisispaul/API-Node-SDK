@@ -12,7 +12,7 @@ class TrackviaAPI {
      */
     constructor(userKey, host = 'https://go.trackvia.com:443') {
         if(!userKey) {
-            throw new Error('Must provide API key to TRackviaAPI constructor');
+            throw new Error('Must provide API key to TrackviaAPI constructor');
         }
 
         global.__tv_host = host;

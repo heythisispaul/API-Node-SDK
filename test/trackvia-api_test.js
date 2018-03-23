@@ -12,7 +12,7 @@ const api = new TrackviaAPI(KEY);
 describe('TrackVia', () => {
     describe('constructor method', () => {
         it('should throw error if API key is not passed in', () => {
-            expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TRackviaAPI constructor');
+            expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
         });
     });
     describe('login method', () => {

@@ -10,8 +10,13 @@ const ACCOUNT = '22223';
 const api = new TrackviaAPI(KEY);
 
 describe('TrackVia', () => {
-    describe('Account Functions', () => {
-        describe('#login', () => {
+    describe('constructor method', () => {
+        it('should throw error if API key is not passed in', () => {
+            expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TRackviaAPI constructor');
+        });
+    });
+    describe('Account Methods', () => {
+        describe('login Method', () => {
             it('should login', () => {
                 return api.login(USERNAME, PASSWORD)
                     .then(() => {
@@ -24,6 +29,9 @@ describe('TrackVia', () => {
                         expect(err).to.be.instanceOf(Error);
                     });
             });
+        });
+        describe('getApps Method', () => {
+
         });
     });
 });

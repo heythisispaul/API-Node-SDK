@@ -70,6 +70,23 @@ describe('TrackVia', () => {
         })
     });
 
+    describe('getAppByName method', () => {
+        it('should return one app in an array', () => {
+            return api.getAppByName('For Testing *** DO NOT DELETE ***')
+                .then(result => {
+                    expect(result).to.be.a('array');
+                    expect(result).to.have.length(1);
+                })
+        });
+        it('should return the matching app record', () => {
+            return api.getAppByName('For Testing *** DO NOT DELETE ***')
+                .then(result => {
+                    expect(result[0].name).to.equal('For Testing *** DO NOT DELETE ***');
+                    expect(result[0].id).to.equal(9);
+                })
+        })
+    });
+
     describe('getUsers method', () => {
         it('should return array of users', () => {
             return api.getUsers()

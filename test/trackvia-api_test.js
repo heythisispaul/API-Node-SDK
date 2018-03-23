@@ -158,7 +158,7 @@ describe('TrackVia', () => {
                 expect(missingNameParam).to.Throw(Error, 'name must be supplied when getting view by name');
             });
         });
-        describe.only('getView method', () => {
+        describe('getView method', () => {
             it('should get a view without paging or query', () => {
                 return api.getView(52)
                     .then(results => {
@@ -202,6 +202,28 @@ describe('TrackVia', () => {
                     .then(results => {
                         expect(results.data).to.have.lengthOf(0);
                     })
+            });
+        });
+        describe('getRecord method', () => {
+            it('should get a record', () => {
+                return api.getRecord(52, 4)
+                    .then(results => {
+                        expect(results).to.have.all.keys(['structure', 'data']);
+                    })
+            });
+            it('should return a record object', () => {
+                return api.getRecord(52, 4)
+                    .then(results => {
+                        expect(results.data).to.have.all.keys(['TEST FIELD', 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
+                    })
+            });
+            it('should throw an error without a viewId', () => {
+                const noViewId = () => api.getRecord(undefined, 386);
+                expect(noViewId).to.throw('view id must be supplied to getRecord');
+            });
+            it('should throw an error without a recordId', () => {
+                const noRecordId = () => api.getRecord(386, undefined);
+                expect(noRecordId).to.throw('record id must be supplied to getRecord');
             });
         });
     });

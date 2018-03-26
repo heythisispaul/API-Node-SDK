@@ -40,13 +40,13 @@ describe('TrackVia', () => {
                     expect(err).to.be.instanceOf(Error);
                 });
         });
-        it('should not login with no password', () => {
+        it('should throw error with no password', () => {
             return api.login(USERNAME)
                 .catch((err) => {
                     expect(err).to.be.instanceOf(Error);
                 });
         });
-        it('should not login with no username and password', () => {
+        it('should throw error with no username and password', () => {
             return api.login()
                 .catch((err) => {
                     expect(err).to.be.instanceOf(Error);

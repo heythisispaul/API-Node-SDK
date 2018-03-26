@@ -27,20 +27,28 @@ describe('Auth Functions', () => {
             expect(accessToken).to.be.a('string');
         });
     });
+    describe('setRefreshToken', () => {
+        it('should set a refreshToken property', () => {
+            Auth.setRefreshToken('refreshToken', 1000);
+            expect(Auth.refreshToken).to.equal('refreshToken');
+        })
+        it('should create a method that will execute 15 sec before expiration', () => {
+            expect(Auth.refreshTimer).to.not.be.undefined;
+        });
+    });
     describe('getRefreshToken', () => {
         it('should return the refresh token', () => {
             const refreshToken = Auth.getRefreshToken();
             expect(refreshToken).to.be.a('string');
         });
     });
-    describe('setRefreshToken', () => {
-        it('should create a method that will execute 15 sec before expiration', () => {
-            expect(Auth.refreshTimer).to.be.undefined;
-            Auth.setRefreshToken('refreshToken', 1000);
-
-        });
-    });
     describe('doRefreshToken', () => {
-
+        it('should be a function', () => {
+            expect(Auth.doRefreshToken).to.be.a('function');
+        });
+        it('should return a promise', () => {
+            const result = Auth.doRefreshToken();
+            expect(result).to.be.a('promise');
+        });
     });
 });

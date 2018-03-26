@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "webpack --watch",
     "build": "webpack",
-    "test": "nyc mocha test/trackvia-api_test.js --exit"
+    "test": "nyc mocha test/trackvia-api_test.js test/auth_test.js --exit"
   },
   "repository": {
     "type": "git",

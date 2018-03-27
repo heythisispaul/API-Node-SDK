@@ -5,8 +5,9 @@ const Auth = require('../src/lib/auth');
 describe('Auth Functions', () => {
     describe('setUserKey', () => {
         it('should set the userKey', () => {
-            Auth.setUserKey('hello');
-            expect(Auth.userKey).to.equal('hello');
+            const userKey = 'hello';
+            Auth.setUserKey(userKey);
+            expect(Auth.userKey).to.equal(userKey);
         });
     });
     describe('getUserKey', () => {
@@ -17,8 +18,9 @@ describe('Auth Functions', () => {
     });
     describe('setAccessToken', () => {
         it('should set the access token', () => {
-            Auth.setAccessToken('IamanAccessToken');
-            expect(Auth.accessToken).to.equal('IamanAccessToken');
+            const accessToken = 'IamanAccessToken';
+            Auth.setAccessToken(accessToken);
+            expect(Auth.accessToken).to.equal(accessToken);
         });
     });
     describe('getAccessToken', () => {
@@ -29,8 +31,9 @@ describe('Auth Functions', () => {
     });
     describe('setRefreshToken', () => {
         it('should set a refreshToken property', () => {
-            Auth.setRefreshToken('refreshToken', 1000);
-            expect(Auth.refreshToken).to.equal('refreshToken');
+            const refreshToken = 'refreshToken';
+            Auth.setRefreshToken(refreshToken, 1000);
+            expect(Auth.refreshToken).to.equal(refreshToken);
         })
         it('should create a method that will execute 15 sec before expiration', () => {
             expect(Auth.refreshTimer).to.not.be.undefined;

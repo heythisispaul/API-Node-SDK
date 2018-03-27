@@ -23,13 +23,15 @@ describe('TrackVia', () => {
                 })
         });
         it('should throw error with incorrect username', () => {
-            return api.login('notmyusername', PASSWORD)
+            const notUsername = 'notmyusername';
+            return api.login(notUsername, PASSWORD)
                 .catch((err) => {
                     expect(err).to.be.instanceOf(Error);
                 });
         });
         it('should throw error with incorrect password', () => {
-            return api.login(USERNAME, 'notmypassword')
+            const notPassword = 'notmypassword';
+            return api.login(USERNAME, notPassword)
                 .catch((err) => {
                     expect(err).to.be.instanceOf(Error);
                 });
@@ -59,9 +61,10 @@ describe('TrackVia', () => {
         });
         describe('setAccessToken', () => {
             it('should set access token', () => {
-                api.setAccessToken('abc123');
+                const newAccessToken = 'abc123';
+                api.setAccessToken(newAccessToken);
                 const accessToken = api.getAccessToken();
-                expect(accessToken).to.equal('abc123');
+                expect(accessToken).to.equal(newAccessToken);
             });
         });
         describe('getAccessToken', () => {
@@ -107,16 +110,18 @@ describe('TrackVia', () => {
     
         describe('getAppByName method', () => {
             it('should return one app in an array', () => {
-                return api.getAppByName('For Testing *** DO NOT DELETE ***')
+                const appName = 'For Testing *** DO NOT DELETE ***';
+                return api.getAppByName(appName)
                     .then(result => {
                         expect(result).to.be.a('array');
                         expect(result).to.have.lengthOf(1);
                     })
             });
             it('should return the matching app record', () => {
-                return api.getAppByName('For Testing *** DO NOT DELETE ***')
+                const appName = 'For Testing *** DO NOT DELETE ***';                                
+                return api.getAppByName(appName)
                     .then(result => {
-                        expect(result[0].name).to.equal('For Testing *** DO NOT DELETE ***');
+                        expect(result[0].name).to.equal(appName);
                         expect(result[0].id).to.equal(9);
                     })
             })
@@ -129,13 +134,25 @@ describe('TrackVia', () => {
                         expect(results).to.have.all.keys('structure', 'data', 'totalCount');
                     });
             });
-            it('should return user objects in array that is value of structure property', () => {
+            it('should return objects in structure array', () => {
                 return api.getUsers()
                     .then(results => {
                         expect(results.structure).to.have.length.above(0);
                         expect(results.structure).to.be.a('array');
-                        expect(results.structure[0]).to.be.a('object');
-                        expect(results.structure[0]).to.have.all.keys(['name', 'type', 'displayOrder', 'required', 'unique', 'canRead', 'canUpdate', 'canCreate', 'relationshipSize', 'propertyName']);
+                    })
+            });
+            it('should return objects in data array', () => {
+                return api.getUsers()
+                    .then(results => {
+                        expect(results.data).to.have.length.above(0);
+                        expect(results.data).to.be.a('array');
+                    })
+            });
+            it('should return number in totalCount', () => {
+                return api.getUsers()
+                    .then(results => {
+                        expect(results.totalCount).to.be.above(0);
+                        expect(results.totalCount).to.be.a('number');
                     })
             });
         });
@@ -170,17 +187,20 @@ describe('TrackVia', () => {
         });
         describe('getViewByName method', () => {
             it('should return an array of one view', () => {
-                return api.getViewByName('Default WEB SDK TESTING View')
+                const viewName = 'Default WEB SDK TESTING View';
+                return api.getViewByName(viewName)
                     .then(results => {
                         expect(results).to.be.a('array');
                         expect(results).to.have.lengthOf(1);
                     })
             });
             it('should return the matching view record', () => {
-                return api.getViewByName('Default WEB SDK TESTING View')
+                const viewName = 'Default WEB SDK TESTING View';
+                const appName = 'For Testing *** DO NOT DELETE ***';                
+                return api.getViewByName(viewName)
                     .then(results => {
-                        expect(results[0].name).to.equal('Default WEB SDK TESTING View');
-                        expect(results[0].applicationName).to.equal('For Testing *** DO NOT DELETE ***');
+                        expect(results[0].name).to.equal(viewName);
+                        expect(results[0].applicationName).to.equal(appName);
                         expect(results[0].default).to.equal(true);
                     })
             });
@@ -196,13 +216,34 @@ describe('TrackVia', () => {
                         expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
                     })
             });
+            it('should return objects in structure array', () => {
+                return api.getView(52)
+                    .then(results => {
+                        expect(results.structure).to.have.length.above(0);
+                        expect(results.structure).to.be.a('array');
+                    })
+            });
+            it('should return objects in data array', () => {
+                return api.getView(52)
+                    .then(results => {
+                        expect(results.data).to.have.length.above(0);
+                        expect(results.data).to.be.a('array');
+                    })
+            });
+            it('should return number in totalCount', () => {
+                return api.getView(52)
+                    .then(results => {
+                        expect(results.totalCount).to.be.above(0);
+                        expect(results.totalCount).to.be.a('number');
+                    })
+            });
             it('should get a view with a query', () => {
                 return api.getView(52, {}, 'abc')
                     .then(results => {
                         expect(results.data).to.have.length.above(0);
                     })
             });
-            it('should get a view with paging', () => {
+            it('should get one view with paging', () => {
                 const paging = {
                     start: 0,
                     max: 1
@@ -212,7 +253,7 @@ describe('TrackVia', () => {
                         expect(results.data).to.have.lengthOf(1);
                     })
             });
-            it('should get a view with paging and a query', () => {
+            it('should get one view with paging and a query', () => {
                 const paging = {
                     start: 0,
                     max: 1
@@ -222,7 +263,7 @@ describe('TrackVia', () => {
                         expect(results.data).to.have.lengthOf(1);
                     })
             });
-            it('should fail with a viewId', () => {
+            it('should fail without a viewId', () => {
                 return api.getView() 
                     .catch(err => {
                         expect(err).to.be.a('object');
@@ -236,13 +277,20 @@ describe('TrackVia', () => {
             });
         });
         describe('getRecord method', () => {
-            it('should get a record', () => {
+            it('should get a record and return object with keys of structure and data', () => {
                 return api.getRecord(52, 4)
                     .then(results => {
                         expect(results).to.have.all.keys(['structure', 'data']);
                     })
             });
-            it('should return a record object', () => {
+            it('should return an array in the structure property', () => {
+                return api.getRecord(52, 4)
+                    .then(results => {
+                        expect(results.structure).to.be.a('array');
+                        expect(results.structure).to.have.length.above(0);
+                    })
+            });
+            it('should return a record object in the data property', () => {
                 return api.getRecord(52, 4)
                     .then(results => {
                         expect(results.data).to.have.all.keys(['TEST FIELD', 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
@@ -301,20 +349,31 @@ describe('TrackVia', () => {
             });
         });
         describe('updateRecord method', () => {
+            const viewId = 52;
+            const recordId = 4;
+            const validRecordData = {
+                'TEST FIELD': 'new data'
+            };
+            const invalidRecordData = {
+                notHere: 'data'
+            };
             it('should update the record', () => {
-                return api.updateRecord(52, 4, {'TEST FIELD': 'new data'})
+                const recordData = {
+                    'TEST FIELD': 'new data'
+                };
+                return api.updateRecord(viewId, recordId, validRecordData)
                     .then(results => {
                         expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
                         expect(results.data[0]['TEST FIELD']).to.equal('new data');
                     })
             })
             it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.updateRecord(undefined, 4, {record: 'data'});
-                expect(noViewId).to.throw('view id must be supplied to updateRecord');
+                const noViewId = () => api.updateRecord(undefined, recordId, invalidRecordData);
+                expect(noViewId).to.Throw(Error, 'view id must be supplied to updateRecord');
             });
             it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.updateRecord(52, undefined, {record: 'data'});
-                expect(noRecordId).to.throw('record id must be supplied to updateRecord');
+                const noRecordId = () => api.updateRecord(viewId, undefined, invalidRecordData);
+                expect(noRecordId).to.Throw(Error, 'record id must be supplied to updateRecord');
             });
         });
         describe('updateRecords', () => {
@@ -323,80 +382,87 @@ describe('TrackVia', () => {
         describe('deleteAllRecordsInView', () => {
             it('should throw error if no view id is supplied', () => {
                 const noViewId = () => api.deleteAllRecordsInView();
-                expect(noViewId).to.throw('view id must be supplied to deleteAllRecordsInView');
+                expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteAllRecordsInView');
             });
         });
         describe('deleteRecord method', () => {
             it('should throw error if no view id is supplied', () => {
                 const noViewId = () => api.deleteRecord(undefined, 4);
-                expect(noViewId).to.throw('view id must be supplied to deleteRecord');
+                expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteRecord');
             });
             it('should throw error if no record id is supplied', () => {
                 const noRecordId = () => api.deleteRecord(52, undefined);
-                expect(noRecordId).to.throw('record id must be supplied to deleteRecord');
+                expect(noRecordId).to.Throw(Error, 'record id must be supplied to deleteRecord');
             });
         });
     });
     describe('File Methods', () => {
         let recordId;
+        const viewId = 52;
+        const fieldName = 'Doc Field';
+        const filePath = __dirname + '/test.pdf';
+
         before(() => {
             return api.login(USERNAME, PASSWORD);
         });
         before(() => {
-            return api.addRecord(52, {'TEST FIELD': 'abc123'})
+            const recordData = {
+                'TEST FIELD': 'abc123'
+            };
+            return api.addRecord(viewId, recordData)
                 .then(result => {
                     recordId = result.data[0].id
                 })
         });
         describe('attachFile', () => {
             it('should attach a file', () => {
-                return api.attachFile(52, recordId, 'Doc Field', __dirname + '/test.pdf')
+                return api.attachFile(viewId, recordId, fieldName, filePath)
                     .then(result => {
                         expect(JSON.parse(result)).to.have.all.keys(['structure', 'data']);
                     })
             });
             it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.attachFile(undefined, 4, 'Field Name', 'File Path');
+                const noViewId = () => api.attachFile(undefined, recordId, fieldName, filePath);
                 expect(noViewId).to.throw('view id must be supplied to attachFile');
             });
             it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.attachFile(52, undefined, 'Field Name', 'File Path');
+                const noRecordId = () => api.attachFile(viewId, undefined, fieldName, filePath);
                 expect(noRecordId).to.throw('record id must be supplied to attachFile');
             });
             it('should throw error if no field name is supplied', () => {
-                const noFieldName = () => api.attachFile(52, 4, undefined, 'File Path');
+                const noFieldName = () => api.attachFile(viewId, recordId, undefined, filePath);
                 expect(noFieldName).to.throw('field name must be supplied to attachFile');
             });
             it('should throw error if no field path is supplied', () => {
-                const noFieldPath = () => api.attachFile(52, 4, 'Field Name', undefined);
+                const noFieldPath = () => api.attachFile(viewId, recordId, fieldName, undefined);
                 expect(noFieldPath).to.throw('file path must be supplied to attachFile');
             });
         });
         describe('getFile', () => {
             it('should get a file', () => {
-                return api.getFile(52, recordId, 'Doc Field')
+                return api.getFile(viewId, recordId, 'Doc Field')
                     .then(result => {
                         expect(result).to.not.be.undefined;
                     })
             });
             it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.getFile(undefined, 4, 'Field Name');
+                const noViewId = () => api.getFile(undefined, recordId, fieldName);
                 expect(noViewId).to.throw('view id must be supplied to downloadFile');
             });
             it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.getFile(52, undefined, 'Field Name');
+                const noRecordId = () => api.getFile(viewId, undefined, fieldName);
                 expect(noRecordId).to.throw('record id must be supplied to downloadFile');
             });
             it('should throw error if no field name is supplied', () => {
-                const noFieldName = () => api.getFile(52, 4, undefined);
+                const noFieldName = () => api.getFile(viewId, recordId, undefined);
                 expect(noFieldName).to.throw('field name must be supplied to downloadFile');
             });
         });
         describe('deleteFile', () => {
             it('should delete a file', () => {
-                return api.deleteFile(52, recordId, 'Doc Field')
+                return api.deleteFile(viewId, recordId, 'Doc Field')
                     .then(() => {
-                        return api.getFile(52, recordId, 'Doc Field')
+                        return api.getFile(viewId, recordId, 'Doc Field')
                             .catch(err => {
                                 const errorBody = JSON.parse(err.body);
                                 expect(errorBody.message).to.equal('The resource you requested could not be found.File does not exist.');
@@ -406,15 +472,15 @@ describe('TrackVia', () => {
                     });
             });
             it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.deleteFile(undefined, 4, 'Field Name');
+                const noViewId = () => api.deleteFile(undefined, recordId, fieldName);
                 expect(noViewId).to.throw('view id must be supplied to deleteFile');
             });
             it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.deleteFile(52, undefined, 'Field Name');
+                const noRecordId = () => api.deleteFile(viewId, undefined, fieldName);
                 expect(noRecordId).to.throw('record id must be supplied to deleteFile');
             });
             it('should throw error if no field name is supplied', () => {
-                const noFieldName = () => api.deleteFile(52, 4, undefined);
+                const noFieldName = () => api.deleteFile(viewId, recordId, undefined);
                 expect(noFieldName).to.throw('field name must be supplied to deleteFile');
             });
         });

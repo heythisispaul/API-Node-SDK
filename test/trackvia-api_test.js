@@ -5,7 +5,10 @@ const TrackviaAPI = require('../src/trackvia-api');
 const USERNAME = 'mike.scherer+prod_test@trackvia.com';
 const PASSWORD = 'Test1234';
 const KEY = '06e44182a2304049fa8fab34251d8db5';
-const ACCOUNT = '22223';
+const ACCOUNT = 22223;
+const APP = 9;
+const TABLE = 38;
+const VIEW = 52;
 
 const api = new TrackviaAPI(KEY);
 
@@ -277,21 +280,23 @@ describe('TrackVia', () => {
             });
         });
         describe('getRecord method', () => {
+            const viewId = 52;
+            const recordId = 4;
             it('should get a record and return object with keys of structure and data', () => {
-                return api.getRecord(52, 4)
+                return api.getRecord(viewId, recordId)
                     .then(results => {
                         expect(results).to.have.all.keys(['structure', 'data']);
                     })
             });
             it('should return an array in the structure property', () => {
-                return api.getRecord(52, 4)
+                return api.getRecord(viewId, recordId)
                     .then(results => {
                         expect(results.structure).to.be.a('array');
                         expect(results.structure).to.have.length.above(0);
                     })
             });
             it('should return a record object in the data property', () => {
-                return api.getRecord(52, 4)
+                return api.getRecord(viewId, recordId)
                     .then(results => {
                         expect(results.data).to.have.all.keys(['TEST FIELD', 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
                     })
@@ -306,11 +311,13 @@ describe('TrackVia', () => {
             });
         });
         describe('addRecord method', () => {
+            const viewId = 52;
+
             it('should add a record', () => {
                 const recordData = {
                     'TEST FIELD': 'abc123'
                 };
-                return api.addRecord(52, recordData)
+                return api.addRecord(viewId, recordData)
                     .then(results => {
                         expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
                         expect(results.totalCount).to.be.above(0);
@@ -322,7 +329,7 @@ describe('TrackVia', () => {
                     const parentDetails = {
                         'TEST FIELD': 'abc123'
                     };
-                    return api.addRecord(52, parentDetails)
+                    return api.addRecord(viewId, parentDetails)
                         .then(results => {
                             parentRecordId = results.data[0].id;
                         })
@@ -342,7 +349,7 @@ describe('TrackVia', () => {
                 const recordData = {
                     'WONT WORK': 'abc123'
                 };
-                return api.addRecord(52, recordData)
+                return api.addRecord(viewId, recordData)
                     .catch(err => {
                         expect(err.body.message).to.equal('DENIED!!! - field "WONT WORK" either does not exist or you do not have access to it.');
                     })
@@ -377,7 +384,22 @@ describe('TrackVia', () => {
             });
         });
         describe('updateRecords', () => {
-            //not sure how to test the functionality of these API calls
+            const recordData = {
+                'TEST FIELD': 'hi'
+            };
+            // before(() => {
+            //     return api.addRecord(52, {'TEST FIELD': 'hello'})
+            //         .then(result => {
+            //             console.log(result.data) 
+            //         })
+            // })
+
+            it('should exist', () => {
+                // return api.updateRecords(ACCOUNT, APP, TABLE, recordData)
+                    // .then(results => {
+                    //     console.log(results);
+                    // })
+            });
         });
         describe('deleteAllRecordsInView', () => {
             it('should throw error if no view id is supplied', () => {
@@ -386,6 +408,36 @@ describe('TrackVia', () => {
             });
         });
         describe('deleteRecord method', () => {
+            let idToDelete;
+            before(() => {
+                const recordData = {
+                    'TEST FIELD': 'I will be deleted!'
+                };
+                return api.addRecord(VIEW, recordData)
+                    .then((result) => {
+                        idToDelete = result.data[0].id;
+                    })
+            });
+            it('the record to delete should exist', () => {
+                return api.getRecord(VIEW, idToDelete)
+                    .then(result => {
+                        expect(result.data).to.be.a('object');
+                        expect(result.data).to.not.be.undefined;
+                    })
+            });
+            it('should delete the record', () => {
+                return api.deleteRecord(VIEW, idToDelete)
+                    .then(result => {
+                        expect('no errors thrown').to.equal('no errors thrown');
+                    })  
+            });
+            it('the record to delete should be gone', () => {
+                return api.getRecord(VIEW, idToDelete)
+                    .catch(err => {
+                        const errorBody = JSON.parse(err.body);
+                        expect(errorBody.message).to.equal(`DENIED!!! - Record: ${idToDelete} either does not exist or you do not have access to it.`);
+                    })
+            });
             it('should throw error if no view id is supplied', () => {
                 const noViewId = () => api.deleteRecord(undefined, 4);
                 expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteRecord');

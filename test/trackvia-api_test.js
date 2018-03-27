@@ -93,6 +93,11 @@ describe('TrackVia', () => {
     describe('Interactive Functions', () => {
         before(() => {
             return api.login(USERNAME, PASSWORD);
+            return api.addRecord(VIEW, {'TEST FIELD': 'data1'});
+            return api.addRecord(VIEW, {'TEST FIELD': 'data2'});
+            return api.addRecord(VIEW, {'TEST FIELD': 'data3'});
+            return api.addRecord(VIEW, {'TEST FIELD': 'data4'});
+            return api.addRecord(VIEW, {'TEST FIELD': 'data5'});         
         });
         describe('getApps method', () => {
             it('should return array of apps', () => {
@@ -279,174 +284,198 @@ describe('TrackVia', () => {
                     })
             });
         });
-        describe('getRecord method', () => {
-            const viewId = 52;
-            const recordId = 4;
-            it('should get a record and return object with keys of structure and data', () => {
-                return api.getRecord(viewId, recordId)
-                    .then(results => {
-                        expect(results).to.have.all.keys(['structure', 'data']);
-                    })
-            });
-            it('should return an array in the structure property', () => {
-                return api.getRecord(viewId, recordId)
-                    .then(results => {
-                        expect(results.structure).to.be.a('array');
-                        expect(results.structure).to.have.length.above(0);
-                    })
-            });
-            it('should return a record object in the data property', () => {
-                return api.getRecord(viewId, recordId)
-                    .then(results => {
-                        expect(results.data).to.have.all.keys(['TEST FIELD', 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
-                    })
-            });
-            it('should throw an error without a viewId', () => {
-                const noViewId = () => api.getRecord(undefined, 386);
-                expect(noViewId).to.throw('view id must be supplied to getRecord');
-            });
-            it('should throw an error without a recordId', () => {
-                const noRecordId = () => api.getRecord(386, undefined);
-                expect(noRecordId).to.throw('record id must be supplied to getRecord');
-            });
-        });
-        describe('addRecord method', () => {
-            const viewId = 52;
-
-            it('should add a record', () => {
-                const recordData = {
-                    'TEST FIELD': 'abc123'
-                };
-                return api.addRecord(viewId, recordData)
-                    .then(results => {
-                        expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
-                        expect(results.totalCount).to.be.above(0);
-                    })
-            });
-            it('should add a record with a link to parent', () => {
-                let parentRecordId;
-                before(() => {
-                    const parentDetails = {
-                        'TEST FIELD': 'abc123'
-                    };
-                    return api.addRecord(viewId, parentDetails)
-                        .then(results => {
-                            parentRecordId = results.data[0].id;
-                        })
-                });
-
-                const recordData = {
-                    'CHILD TEST FIELD': 'abc123',
-                    'Link to WEB SDK TESTING': parentRecordId
-                };
-                return api.addRecord(53, recordData)
-                    .then(results => {
-                        expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
-                        expect(results.totalCount).to.be.above(0);
-                    })
-            });
-            it('should not add a record with a bad field', () => {
-                const recordData = {
-                    'WONT WORK': 'abc123'
-                };
-                return api.addRecord(viewId, recordData)
-                    .catch(err => {
-                        expect(err.body.message).to.equal('DENIED!!! - field "WONT WORK" either does not exist or you do not have access to it.');
-                    })
-            });
-        });
-        describe('updateRecord method', () => {
-            const viewId = 52;
-            const recordId = 4;
-            const validRecordData = {
-                'TEST FIELD': 'new data'
-            };
-            const invalidRecordData = {
-                notHere: 'data'
-            };
-            it('should update the record', () => {
-                const recordData = {
-                    'TEST FIELD': 'new data'
-                };
-                return api.updateRecord(viewId, recordId, validRecordData)
-                    .then(results => {
-                        expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
-                        expect(results.data[0]['TEST FIELD']).to.equal('new data');
-                    })
-            })
-            it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.updateRecord(undefined, recordId, invalidRecordData);
-                expect(noViewId).to.Throw(Error, 'view id must be supplied to updateRecord');
-            });
-            it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.updateRecord(viewId, undefined, invalidRecordData);
-                expect(noRecordId).to.Throw(Error, 'record id must be supplied to updateRecord');
-            });
-        });
-        describe('updateRecords', () => {
-            const recordData = {
-                'TEST FIELD': 'hi'
-            };
-            // before(() => {
-            //     return api.addRecord(52, {'TEST FIELD': 'hello'})
-            //         .then(result => {
-            //             console.log(result.data) 
-            //         })
-            // })
-
-            it('should exist', () => {
-                // return api.updateRecords(ACCOUNT, APP, TABLE, recordData)
-                    // .then(results => {
-                    //     console.log(results);
-                    // })
-            });
-        });
-        describe('deleteAllRecordsInView', () => {
-            it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.deleteAllRecordsInView();
-                expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteAllRecordsInView');
-            });
-        });
-        describe('deleteRecord method', () => {
-            let idToDelete;
+        describe('Record Methods', () => {
+            let recordId;
             before(() => {
                 const recordData = {
-                    'TEST FIELD': 'I will be deleted!'
+                    'TEST FIELD': 'test data'
                 };
                 return api.addRecord(VIEW, recordData)
-                    .then((result) => {
-                        idToDelete = result.data[0].id;
-                    })
-            });
-            it('the record to delete should exist', () => {
-                return api.getRecord(VIEW, idToDelete)
                     .then(result => {
-                        expect(result.data).to.be.a('object');
-                        expect(result.data).to.not.be.undefined;
+                        recordId = result.data[0].id;
                     })
             });
-            it('should delete the record', () => {
-                return api.deleteRecord(VIEW, idToDelete)
-                    .then(result => {
-                        expect('no errors thrown').to.equal('no errors thrown');
-                    })  
+            describe('getRecord method', () => {
+                it('should get a record and return object with keys of structure and data', () => {
+                    return api.getRecord(VIEW, recordId)
+                        .then(results => {
+                            expect(results).to.have.all.keys(['structure', 'data']);
+                        })
+                });
+                it('should return an array in the structure property', () => {
+                    return api.getRecord(VIEW, recordId)
+                        .then(results => {
+                            expect(results.structure).to.be.a('array');
+                            expect(results.structure).to.have.length.above(0);
+                        })
+                });
+                it('should return a record object in the data property', () => {
+                    return api.getRecord(VIEW, recordId)
+                        .then(results => {
+                            expect(results.data).to.have.all.keys(['TEST FIELD', 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
+                        })
+                });
+                it('should throw an error without a viewId', () => {
+                    const noViewId = () => api.getRecord(undefined, 386);
+                    expect(noViewId).to.throw('view id must be supplied to getRecord');
+                });
+                it('should throw an error without a recordId', () => {
+                    const noRecordId = () => api.getRecord(386, undefined);
+                    expect(noRecordId).to.throw('record id must be supplied to getRecord');
+                });
             });
-            it('the record to delete should be gone', () => {
-                return api.getRecord(VIEW, idToDelete)
-                    .catch(err => {
-                        const errorBody = JSON.parse(err.body);
-                        expect(errorBody.message).to.equal(`DENIED!!! - Record: ${idToDelete} either does not exist or you do not have access to it.`);
-                    })
+            describe('addRecord method', () => {
+                it('should add a record', () => {
+                    const recordData = {
+                        'TEST FIELD': 'abc123'
+                    };
+                    return api.addRecord(VIEW, recordData)
+                        .then(results => {
+                            expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
+                            expect(results.totalCount).to.be.above(0);
+                        })
+                });
+                it('should add a record with a link to parent', () => {
+                    let parentRecordId;
+                    before(() => {
+                        const parentDetails = {
+                            'TEST FIELD': 'abc123'
+                        };
+                        return api.addRecord(VIEW, parentDetails)
+                            .then(results => {
+                                parentRecordId = results.data[0].id;
+                            })
+                    });
+    
+                    const recordData = {
+                        'CHILD TEST FIELD': 'abc123',
+                        'Link to WEB SDK TESTING': parentRecordId
+                    };
+                    return api.addRecord(53, recordData)
+                        .then(results => {
+                            expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
+                            expect(results.totalCount).to.be.above(0);
+                        })
+                });
+                it('should not add a record with a bad field', () => {
+                    const recordData = {
+                        'WONT WORK': 'abc123'
+                    };
+                    return api.addRecord(VIEW, recordData)
+                        .catch(err => {
+                            expect(err.body.message).to.equal('DENIED!!! - field "WONT WORK" either does not exist or you do not have access to it.');
+                        })
+                });
             });
-            it('should throw error if no view id is supplied', () => {
-                const noViewId = () => api.deleteRecord(undefined, 4);
-                expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteRecord');
+            describe('updateRecord method', () => {
+                const validRecordData = {
+                    'TEST FIELD': 'new data'
+                };
+                const invalidRecordData = {
+                    notHere: 'data'
+                };
+                it('should update the record', () => {
+                    return api.updateRecord(VIEW, recordId, validRecordData)
+                        .then(results => {
+                            expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
+                            expect(results.data[0]['TEST FIELD']).to.equal('new data');
+                        })
+                })
+                it('should throw error if no view id is supplied', () => {
+                    const noViewId = () => api.updateRecord(undefined, recordId, invalidRecordData);
+                    expect(noViewId).to.Throw(Error, 'view id must be supplied to updateRecord');
+                });
+                it('should throw error if no record id is supplied', () => {
+                    const noRecordId = () => api.updateRecord(VIEW, undefined, invalidRecordData);
+                    expect(noRecordId).to.Throw(Error, 'record id must be supplied to updateRecord');
+                });
             });
-            it('should throw error if no record id is supplied', () => {
-                const noRecordId = () => api.deleteRecord(52, undefined);
-                expect(noRecordId).to.Throw(Error, 'record id must be supplied to deleteRecord');
+            describe('updateRecords', () => {
+                const recordData = {
+                    'TEST FIELD': 'hi'
+                };
+                // before(() => {
+                //     return api.addRecord(52, {'TEST FIELD': 'hello'})
+                //         .then(result => {
+                //             console.log(result.data) 
+                //         })
+                // })
+    
+                it('should exist', () => {
+                    // return api.updateRecords(ACCOUNT, APP, TABLE, recordData)
+                        // .then(results => {
+                        //     console.log(results);
+                        // })
+                });
             });
+            describe('deleteAllRecordsInView', () => {
+                it('should throw error if no view id is supplied', () => {
+                    const noViewId = () => api.deleteAllRecordsInView();
+                    expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteAllRecordsInView');
+                });
+                it('there should be records in the view', () => {
+                    return api.getView(VIEW)
+                        .then(result => {
+                            expect(result.data).to.have.length.above(0);
+                        })
+                });
+                it('should delete all records in the view without throwing errors', () => {
+                    return api.deleteAllRecordsInView(VIEW)
+                        .then(result => {
+                            expect('no errors').to.equal('no errors');
+                        })
+                });
+                it('there should be no records left in the view', () => {
+                    return api.getView(VIEW)
+                        .then(result => {
+                            expect(result.data).to.have.lengthOf(0);
+                        })
+                });
+            });
+            describe('deleteRecord method', () => {
+                let idToDelete;
+                before(() => {
+                    const recordData = {
+                        'TEST FIELD': 'I will be deleted!'
+                    };
+                    return api.addRecord(VIEW, recordData)
+                        .then((result) => {
+                            idToDelete = result.data[0].id;
+                        })
+                });
+                it('the record to delete should exist', () => {
+                    return api.getRecord(VIEW, idToDelete)
+                        .then(result => {
+                            expect(result.data).to.be.a('object');
+                            expect(result.data).to.not.be.undefined;
+                        })
+                });
+                it('should delete the record without throwing errors', () => {
+                    return api.deleteRecord(VIEW, idToDelete)
+                        .then(result => {
+                            expect('no errors thrown').to.equal('no errors thrown');
+                        })  
+                });
+                it('the record to delete should be gone', () => {
+                    return api.getRecord(VIEW, idToDelete)
+                        .catch(err => {
+                            const errorBody = JSON.parse(err.body);
+                            expect(errorBody.message).to.equal(`DENIED!!! - Record: ${idToDelete} either does not exist or you do not have access to it.`);
+                        })
+                });
+                it('should throw error if no view id is supplied', () => {
+                    const noViewId = () => api.deleteRecord(undefined, 4);
+                    expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteRecord');
+                });
+                it('should throw error if no record id is supplied', () => {
+                    const noRecordId = () => api.deleteRecord(52, undefined);
+                    expect(noRecordId).to.Throw(Error, 'record id must be supplied to deleteRecord');
+                });
+            });
+
+
         });
+        
     });
     describe('File Methods', () => {
         let recordId;

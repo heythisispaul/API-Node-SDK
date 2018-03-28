@@ -246,7 +246,7 @@ describe('TrackVia', () => {
                     })
             });
             it('should get a view with a query', () => {
-                return api.getView(52, {}, 'abc')
+                return api.getView(52, {}, 'test')
                     .then(results => {
                         expect(results.data).to.have.length.above(0);
                     })
@@ -266,7 +266,7 @@ describe('TrackVia', () => {
                     start: 0,
                     max: 1
                 };
-                return api.getView(52, paging, 'abc')
+                return api.getView(52, paging, 'test')
                     .then(results => {
                         expect(results.data).to.have.lengthOf(1);
                     })
@@ -327,7 +327,7 @@ describe('TrackVia', () => {
             describe('addRecord method', () => {
                 it('should add a record', () => {
                     const recordData = {
-                        'TEST FIELD': 'abc123'
+                        'TEST FIELD': 'hello'
                     };
                     return api.addRecord(VIEW, recordData)
                         .then(results => {
@@ -391,25 +391,30 @@ describe('TrackVia', () => {
                 });
             });
             describe('updateRecords', () => {
-                const recordData = {
-                    'TEST FIELD': 'hi'
-                };
-                // before(() => {
-                //     return api.addRecord(52, {'TEST FIELD': 'hello'})
-                //         .then(result => {
-                //             console.log(result.data) 
-                //         })
-                // })
-    
-                it('should exist', () => {
-                    // return api.updateRecords(ACCOUNT, APP, TABLE, recordData)
-                        // .then(results => {
-                        //     console.log(results);
-                        // })
+                const fieldId = 994;
+                const fieldMetaId = 377;
+                
+                it('should update records without throwing errors', () => {
+                    const recordData = 
+                        { data: [
+                            { id: fieldId, value: 'IT WORKS', type: 'shortAnswer', fieldMetaId: fieldMetaId }                     
+                        ], 
+                        recordIds: [recordId]};
+
+                    return api.updateRecords(ACCOUNT, APP, TABLE, recordData)
+                        .then(results => {
+                            expect('no errors').to.equal('no errors');
+                        })
                 });
+                it('should have updated the value TEST FIELD of the record', () => {
+                    return api.getRecord(VIEW, recordId)
+                        .then(result => {
+                            expect(result.data['TEST FIELD']).to.equal('IT WORKS');
+                        })
+                })
             });
             describe('deleteAllRecordsInView', () => {
-                it('should throw error if no view id is supplied', () => {
+                it('should throw error if no view  id is supplied', () => {
                     const noViewId = () => api.deleteAllRecordsInView();
                     expect(noViewId).to.Throw(Error, 'view id must be supplied to deleteAllRecordsInView');
                 });

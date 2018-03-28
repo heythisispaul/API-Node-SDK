@@ -11,7 +11,7 @@ describe('Auth Functions', () => {
         });
     });
     describe('getUserKey', () => {
-        it('should retun the userKey', () => {
+        it('should return the userKey', () => {
             const userKey = Auth.getUserKey();
             expect(userKey).to.be.a('string');
         });

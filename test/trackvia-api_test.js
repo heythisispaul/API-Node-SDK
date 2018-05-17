@@ -2,34 +2,27 @@ const chai = require('chai');
 const expect = chai.expect;
 const TrackviaAPI = require('../src/trackvia-api');
 
-const config = {
-    ENVIRONMENT: 'https://go.trackvia.com',
-    USERNAME: 'mike.scherer+prod_test@trackvia.com',
-    PASSWORD: 'Test1234',
-    API_KEY: '06e44182a2304049fa8fab34251d8db5',
-    
-    ACCOUNT_ID: 22223,
-    APP_ID: 9,
-    APP_NAME: 'For Testing *** DO NOT DELETE ***',
-    TABLE_ID: 38,
-    VIEW_ID: 52,
-    VIEW_NAME: 'Default WEB SDK TESTING View',
-    CHILD_VIEW_ID: 53
-}
+const config = require('./testConfig');
+const {
+    ENVIRONMENT, 
+    USERNAME, 
+    PASSWORD, 
+    API_KEY, 
+    ACCOUNT_ID, 
+    APP_ID, 
+    APP_NAME, 
+    TABLE_ID,
+    SINGLE_LINE_FIELD_NAME,
+    DOCUMENT_FIELD_NAME,
+    VIEW_ID, 
+    VIEW_NAME,
+} = config;
 
-/**
- * Endpoints not in SDK and therefore not tested:
- * POST /openapi/views/{viewId}/records/create_one (RECORDS, create a record with a file to the given field name)
- * GET /openapi/integrations (INTEGRATIONS, get all integrations)
- * GET /openapi/integrations/{microserviceId}/invoke (INTEGRATIONS, invoke an integration with a GET)
- * POST /openapi/integrations/{microserviceId}/invoke (INTEGRATIONS, invoke an integration with a POST, can be multi-part or JSON)
- */
+const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
 
-const {ENVIRONMENT, USERNAME, PASSWORD, API_KEY, ACCOUNT_ID, APP_ID, APP_NAME, TABLE_ID, VIEW_ID, VIEW_NAME, CHILD_VIEW_ID} = config;
-
-const api = new TrackviaAPI(API_KEY);
-
-console.log(`~~~ Testing API-Node-SDK as ${USERNAME} in environment ${ENVIRONMENT} ~~~`);
+console.log(`~~~ API-Node-SDK Test`);
+console.log(`~~~ USER: ${USERNAME}`);
+console.log(`~~~ ENV:  ${ENVIRONMENT}`);
 
 describe('OAUTH and constructor', () => {
     describe('constructor method for TrackViaAPI SDK', () => {
@@ -112,7 +105,7 @@ describe('APPS', () => {
             return api.getAppByName(APP_NAME)
                 .then(result => {
                     expect(result[0].name).to.equal(APP_NAME);
-                    expect(result[0].id).to.equal(9);
+                    expect(result[0].id).to.equal(APP_ID);
                 })
         });
     });
@@ -170,7 +163,13 @@ describe('USERS', () => {
 
 describe('VIEWS', () => {
     before(() => {
-        return api.login(USERNAME, PASSWORD);
+        return api.login(USERNAME, PASSWORD)
+            .then(() => {
+                const recordData = {
+                    [SINGLE_LINE_FIELD_NAME]: 'hello'
+                };
+                return api.addRecord(VIEW_ID, recordData);
+            });
     });
     describe('GET /openapi/views in getViews method', () => {
         it('should return all the views', () => {
@@ -283,41 +282,18 @@ describe('RECORDS', () => {
     
     before(() => {
         return api.login(USERNAME, PASSWORD);
-      
     });
 
     describe('POST /openapi/views/{viewId}/records in addRecord method', () => {
         it('should add a record', () => {
             const recordData = {
-                'TEST FIELD': 'hello'
+                [SINGLE_LINE_FIELD_NAME]: 'hello'
             };
             return api.addRecord(VIEW_ID, recordData)
                 .then(results => {
                     expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
                     expect(results.totalCount).to.be.above(0);
                     recordId = results.data[0].id;
-                })
-        });
-        it('should add a record with a link to parent', () => {
-            let parentRecordId;
-            before(() => {
-                const parentDetails = {
-                    'TEST FIELD': 'abc123'
-                };
-                return api.addRecord(VIEW_ID, parentDetails)
-                    .then(results => {
-                        parentRecordId = results.data[0].id;
-                    })
-            });
-
-            const recordData = {
-                'CHILD TEST FIELD': 'abc123',
-                'Link to WEB SDK TESTING': parentRecordId
-            };
-            return api.addRecord(CHILD_VIEW_ID, recordData)
-                .then(results => {
-                    expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
-                    expect(results.totalCount).to.be.above(0);
                 })
         });
         it('should not add a record with a bad field', () => {
@@ -348,7 +324,7 @@ describe('RECORDS', () => {
         it('should return a record object in the data property', () => {
             return api.getRecord(VIEW_ID, recordId)
                 .then(results => {
-                    expect(results.data).to.have.all.keys(['TEST FIELD', 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
+                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME, 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
                 })
         });
         it('should throw an error without a VIEW_ID', () => {
@@ -363,7 +339,7 @@ describe('RECORDS', () => {
     
     describe('PUT /openapi/views/{viewId}/records/{recordId} in updateRecord method', () => {
         const validRecordData = {
-            'TEST FIELD': 'new data'
+            [SINGLE_LINE_FIELD_NAME]: 'new data'
         };
         const invalidRecordData = {
             notHere: 'data'
@@ -372,7 +348,7 @@ describe('RECORDS', () => {
             return api.updateRecord(VIEW_ID, recordId, validRecordData)
                 .then(results => {
                     expect(results).to.have.all.keys(['structure', 'data', 'totalCount']);
-                    expect(results.data[0]['TEST FIELD']).to.equal('new data');
+                    expect(results.data[0][SINGLE_LINE_FIELD_NAME]).to.equal('new data');
                 })
         })
         it('should throw error if no view id is supplied', () => {
@@ -400,10 +376,10 @@ describe('RECORDS', () => {
                     expect('no errors').to.equal('no errors');
                 })
         });
-        it('should have updated the value TEST FIELD of the record', () => {
+        it('should have updated the SINGLE_LINE_FIELD_NAME value of the record', () => {
             return api.getRecord(VIEW_ID, recordId)
                 .then(result => {
-                    expect(result.data['TEST FIELD']).to.equal('IT WORKS');
+                    expect(result.data[SINGLE_LINE_FIELD_NAME]).to.equal('IT WORKS');
                 })
         })
     });
@@ -435,7 +411,7 @@ describe('RECORDS', () => {
         let idToDelete;
         before(() => {
             const recordData = {
-                'TEST FIELD': 'I will be deleted!'
+                [SINGLE_LINE_FIELD_NAME]: 'I will be deleted!'
             };
             return api.addRecord(VIEW_ID, recordData)
                 .then((result) => {
@@ -477,7 +453,7 @@ describe('RECORDS', () => {
 describe('RECORDS (file endpoints)', () => {
     let recordId;
     const viewId = VIEW_ID;
-    const fieldName = 'Doc Field';
+    const fieldName = DOCUMENT_FIELD_NAME;
     const filePath = __dirname + '/test.pdf';
 
     before(() => {
@@ -485,7 +461,7 @@ describe('RECORDS (file endpoints)', () => {
     });
     before(() => {
         const recordData = {
-            'TEST FIELD': 'abc123'
+            [SINGLE_LINE_FIELD_NAME]: 'abc123'
         };
         return api.addRecord(viewId, recordData)
             .then(result => {
@@ -518,7 +494,7 @@ describe('RECORDS (file endpoints)', () => {
     });
     describe('GET /openapi/views/{viewId}/records/{recordId}/files/{fieldName:.+} getFile', () => {
         it('should get a file', () => {
-            return api.getFile(viewId, recordId, 'Doc Field')
+            return api.getFile(viewId, recordId, DOCUMENT_FIELD_NAME)
                 .then(result => {
                     expect(result).to.not.be.undefined;
                 })
@@ -538,9 +514,9 @@ describe('RECORDS (file endpoints)', () => {
     });
     describe('DELETE /openapi/views/{viewId}/records/{recordId}/files/{fieldName:.+} deleteFile', () => {
         it('should delete a file', () => {
-            return api.deleteFile(viewId, recordId, 'Doc Field')
+            return api.deleteFile(viewId, recordId, DOCUMENT_FIELD_NAME)
                 .then(() => {
-                    return api.getFile(viewId, recordId, 'Doc Field')
+                    return api.getFile(viewId, recordId, DOCUMENT_FIELD_NAME)
                         .catch(err => {
                             const errorBody = JSON.parse(err.body);
                             expect(errorBody.message).to.equal('The resource you requested could not be found.File does not exist.');

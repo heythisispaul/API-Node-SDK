@@ -1,6 +1,7 @@
 /**
  * For this test suite, you will need a TrackVia account with an API Key, an app, and a table
  * The table must have two fields: one Single Line field and one Document field
+ * For screenshots of the table setup, open test/testInstructions.html
  * All of the names (case sensitive) and IDs are configurable below:
  */
 
@@ -34,7 +35,7 @@ const config = {
 module.exports = config;
 
 /**
- * Endpoints not in SDK and therefore not tested:
+ * Endpoints not yet in SDK and therefore not currently tested:
  * POST /openapi/views/{viewId}/records/create_one (RECORDS, create a record with a file to the given field name)
  * GET /openapi/integrations (INTEGRATIONS, get all integrations)
  * GET /openapi/integrations/{microserviceId}/invoke (INTEGRATIONS, invoke an integration with a GET)

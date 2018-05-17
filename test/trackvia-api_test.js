@@ -454,7 +454,7 @@ describe('RECORDS (file endpoints)', () => {
     let recordId;
     const viewId = VIEW_ID;
     const fieldName = DOCUMENT_FIELD_NAME;
-    const filePath = __dirname + '/test.pdf';
+    const filePath = __dirname + '/assets/test.pdf';
 
     before(() => {
         return api.login(USERNAME, PASSWORD);

@@ -7,18 +7,18 @@
 
 const config = {
     // Choose the environment and account you want to test with
-    ENVIRONMENT: 'https://go.trackvia.com:443',
-    USERNAME: 'katie.scruggs+test@trackvia.com',
-    PASSWORD: 'Test1234',
-    API_KEY: 'b12bf2f4f034885d4cd4671d9c921da2',
-    ACCOUNT_ID: 22780,
+    ENVIRONMENT: 'https://go.trackvia.com:443', // currently production
+    USERNAME: '',
+    PASSWORD: '',
+    API_KEY: '',
+    ACCOUNT_ID: 0,
 
     // Create a test app and enter the app's ID and name (case sensitive) here
-    APP_ID: 4,
+    APP_ID: 0,
     APP_NAME: 'TEST APP',
 
     // Create a test table and enter the table's ID here
-    TABLE_ID: 29,
+    TABLE_ID: 0,
 
     // Create a single line field on your test table and enter the name of the field (case sensitive) here
     SINGLE_LINE_FIELD_NAME: 'SINGLE LINE TEST',
@@ -28,7 +28,7 @@ const config = {
 
     // Go to the default view of your test table and enter the ID and name (case sensitive) of that view here
     // The name of the default view is 'Default {table name} View' (even though it looks different in TrackVia)
-    VIEW_ID: 29,
+    VIEW_ID: 0,
     VIEW_NAME: 'Default TEST TABLE View'
 }
 

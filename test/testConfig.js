@@ -34,7 +34,7 @@ const config = {
     // The name of the default view is 'Default {table name} View' (even though it looks different in TrackVia)
     VIEW_ID: 0,
     VIEW_NAME: 'Default TEST TABLE View'
-}
+};
 
 module.exports = config;
 

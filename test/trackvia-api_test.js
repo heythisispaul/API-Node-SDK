@@ -2,7 +2,10 @@ const chai = require('chai');
 const expect = chai.expect;
 const TrackviaAPI = require('../src/trackvia-api');
 
-const config = require('./testConfig');
+const localConfig = require('./testConfig');
+
+const configuration = CIRCLECI ? config : localConfig;
+
 const {
     ENVIRONMENT, 
     USERNAME, 
@@ -16,7 +19,7 @@ const {
     DOCUMENT_FIELD_NAME,
     VIEW_ID, 
     VIEW_NAME,
-} = config;
+} = configuration;
 
 const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
 

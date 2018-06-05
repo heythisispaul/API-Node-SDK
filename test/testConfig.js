@@ -5,8 +5,12 @@
  * All of the names (case sensitive) and IDs are configurable below:
  */
 
+ /** After you add this information, type "npm test" in your console.
+ */
+
 const config = {
     // Choose the environment and account you want to test with
+    // Make sure this account has an API Key.
     ENVIRONMENT: 'https://go.trackvia.com:443', // currently production
     USERNAME: '',
     PASSWORD: '',

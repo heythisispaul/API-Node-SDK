@@ -4,7 +4,7 @@ const TrackviaAPI = require('../src/trackvia-api');
 
 const localConfig = require('./testConfig');
 
-const configuration = process.env.CIRCLECI ? process.env.config : localConfig;
+const configuration = process.env.CIRCLECI ? process.env : localConfig;
 
 const {
     ENVIRONMENT, 
@@ -29,7 +29,7 @@ console.log(`~~~ ENV:  ${ENVIRONMENT}`);
 
 describe('OAUTH and constructor', () => {
     describe('constructor method for TrackViaAPI SDK', () => {
-        it.skip('should throw error if API key is not passed in', () => {
+        it('should throw error if API key is not passed in', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
         });
     });

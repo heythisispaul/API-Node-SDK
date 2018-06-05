@@ -29,7 +29,7 @@ console.log(`~~~ ENV:  ${ENVIRONMENT}`);
 
 describe('OAUTH and constructor', () => {
     describe('constructor method for TrackViaAPI SDK', () => {
-        it('should throw error if API key is not passed in', () => {
+        it.skip('should throw error if API key is not passed in', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
         });
     });

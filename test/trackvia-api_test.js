@@ -1,7 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
 const TrackviaAPI = require('../src/trackvia-api');
-
 const localConfig = require('./testConfig');
 
 const configuration = process.env.CIRCLECI ? process.env : localConfig;

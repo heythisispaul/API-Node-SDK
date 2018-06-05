@@ -108,7 +108,7 @@ describe('APPS', () => {
             return api.getAppByName(APP_NAME)
                 .then(result => {
                     expect(result[0].name).to.equal(APP_NAME);
-                    expect(result[0].id).to.equal(APP_ID);
+                    expect(result[0].id).to.equal(parseInt(APP_ID));
                 })
         });
     });

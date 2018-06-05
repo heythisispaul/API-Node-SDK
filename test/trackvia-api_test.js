@@ -4,7 +4,7 @@ const TrackviaAPI = require('../src/trackvia-api');
 
 const localConfig = require('./testConfig');
 
-const configuration = CIRCLECI ? config : localConfig;
+const configuration = process.env.CIRCLECI ? process.env.config : localConfig;
 
 const {
     ENVIRONMENT, 

@@ -25,6 +25,7 @@ const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
 
 console.log(`~~~ API-Node-SDK Test`);
 console.log(`~~~ USER: ${USERNAME}`);
+console.log(`~~~ PASS: ${PASSWORD}`);
 console.log(`~~~ ENV:  ${ENVIRONMENT}`);
 
 describe('OAUTH and constructor', () => {

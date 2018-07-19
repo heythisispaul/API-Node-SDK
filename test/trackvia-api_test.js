@@ -10,6 +10,7 @@ const ACCOUNT = 22223;
 const APP = 9;
 const TABLE = 38;
 const VIEW = 52;
+const TOKEN = 'abc123';
 
 const api = new TrackviaAPI(KEY);
 
@@ -18,13 +19,24 @@ describe('TrackVia', () => {
         it('should throw error if API key is not passed in', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
         });
+        it('should instantiate with just an apiKey', () => {
+            expect(new TrackviaAPI(KEY).getUserKey()).to.equal(KEY);
+        });
+        it('should instantiate with an accessToken', () => {
+            expect(new TrackviaAPI(KEY, TOKEN).getUserKey()).to.equal(KEY);
+            expect(new TrackviaAPI(KEY, TOKEN).getAccessToken()).to.equal(TOKEN);
+        });
+        it('should instantiate with a apiKey, an accessToken, and a host', () => {
+            expect(new TrackviaAPI(KEY, TOKEN).getUserKey()).to.equal(KEY);
+            expect(new TrackviaAPI(KEY, TOKEN).getAccessToken()).to.equal(TOKEN);
+        });
     });
     describe('login method', () => {
         it('should login with valid username and password', () => {
             return api.login(USERNAME, PASSWORD)
                 .then(() => {
                     expect(api.getAccessToken()).to.not.be.undefined;
-                })
+                });
         });
         it('should throw error with incorrect username', () => {
             const notUsername = 'notmyusername';

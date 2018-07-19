@@ -9,10 +9,16 @@ class TrackviaAPI {
     /**
      * Creates new TrackviaAPI object
      * @param {String} apikey
+     * @param {String} accessToken
+     * @param {String} host
      */
-    constructor(userKey, host = 'https://go.trackvia.com:443') {
+    constructor(userKey, accessToken = '', host = 'https://go.trackvia.com:443') {
         if(!userKey) {
             throw new Error('Must provide API key to TrackviaAPI constructor');
+        }
+
+        if (accessToken.length) {
+            this.setAccessToken(accessToken);
         }
 
         global.__tv_host = host;

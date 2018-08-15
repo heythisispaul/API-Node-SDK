@@ -19,7 +19,23 @@ var api = new TrackviaAPI('YOUR KEY HERE');
 ```
 
 ## Authenticating
-You must authenticate before accessing any data in Trackvia.
+You must authenticate before accessing any data in Trackvia. There are two methods to properly authenticate: `#login()` and `#setAccessToken()`. With the `machine to machine auth` release, an access token can also be passed via the constructor.
+
+#### TrackviaAPI constructor
+```javascript
+var api = new TrackviaAPI('myAPIKey', 'myAccessToken');
+// Successfully authenticated..
+// Make additional request in here
+```
+
+#### #setAccessToken()
+```javascript
+api.setAccessToken('myAccessToken')
+// Successfully authenticated..
+// Make additional request in here
+```
+
+#### #login()
 ```javascript
 api.login('myTrackviaAccount@gmail.com', 'myPassword')
 .then(() => {

@@ -19,7 +19,7 @@ var api = new TrackviaAPI('YOUR KEY HERE');
 ```
 
 ## Authenticating
-You must authenticate before accessing any data in Trackvia. There are two methods to properly authenticate: `#login()` and `#setAccessToken()`. With the `machine to machine auth` release, an access token can also be passed via the constructor.
+You must authenticate before accessing any data in Trackvia. There are two methods to properly authenticate: `#login()` and `#setAccessToken()`. With the `API Authorization` release, an access token can also be passed via the constructor.
 
 #### TrackviaAPI constructor
 ```javascript
@@ -30,7 +30,7 @@ var api = new TrackviaAPI('myAPIKey', 'myAccessToken');
 
 #### #setAccessToken()
 ```javascript
-api.setAccessToken('myAccessToken')
+api.setAccessToken('myAccessToken');
 // Successfully authenticated..
 // Make additional request in here
 ```
@@ -251,6 +251,6 @@ Note that the endpoints explained in the [docs](https://developer.trackvia.com/l
 `cd API-Node-SDK`
 `npm install`
 
-Open `testConfig.js` in your text editor and set up a test app and test table in your account according to the instructions. For screenshots of the test setup, `open /test/testInstructions.html`.
+Create a file `testConfig.js` by copy and pasting from `testConfig.template.js`. Open this new file in your text editor and set up a test app and test table in your account according to the instructions. For screenshots of the test setup, `open /test/testInstructions.html`.
 
 `npm test`

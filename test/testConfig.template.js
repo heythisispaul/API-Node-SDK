@@ -15,6 +15,7 @@ const config = {
     USERNAME: '',
     PASSWORD: '',
     API_KEY: '',
+    ACCESS_TOKEN: '',
     ACCOUNT_ID: 0,
 
     // Create a test app and enter the app's ID and name (case sensitive) here

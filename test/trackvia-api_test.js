@@ -23,11 +23,11 @@ const {
 const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
 
 console.log(`~~~ API-Node-SDK Test`);
-console.log(`~~~ USER: ${USERNAME}`);
-console.log(`~~~ PASS: ${PASSWORD}`);
-console.log(`~~~ ENV:  ${ACCESS_TOKEN}`);
-console.log(`~~~ ENV:  ${API_KEY}`);
-console.log(`~~~ ENV:  ${ENVIRONMENT}`);
+console.log(`~~~ USER:  ${USERNAME}`);
+console.log(`~~~ PASS:  ${PASSWORD}`);
+console.log(`~~~ ENV:   ${ENVIRONMENT}`);
+console.log(`~~~ KEY:   ${API_KEY}`);
+console.log(`~~~ TOKEN: ${ACCESS_TOKEN}`);
 
 describe('OAUTH and constructor', () => {
     describe('constructor method for TrackViaAPI SDK', () => {
@@ -38,10 +38,6 @@ describe('OAUTH and constructor', () => {
             expect(new TrackviaAPI(API_KEY).getUserKey()).to.equal(API_KEY);
         });
         it('should instantiate with an accessToken', () => {
-            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getUserKey()).to.equal(API_KEY);
-            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getAccessToken()).to.equal(ACCESS_TOKEN);
-        });
-        it('should instantiate with a apiKey, an accessToken, and a host', () => {
             expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getUserKey()).to.equal(API_KEY);
             expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getAccessToken()).to.equal(ACCESS_TOKEN);
         });

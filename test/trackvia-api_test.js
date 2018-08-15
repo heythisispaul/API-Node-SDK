@@ -6,17 +6,18 @@ const localConfig = require('./testConfig');
 const configuration = process.env.CIRCLECI ? process.env : localConfig;
 
 const {
-    ENVIRONMENT, 
-    USERNAME, 
-    PASSWORD, 
-    API_KEY, 
-    ACCOUNT_ID, 
-    APP_ID, 
-    APP_NAME, 
+    ENVIRONMENT,
+    USERNAME,
+    PASSWORD,
+    API_KEY,
+    ACCESS_TOKEN,
+    ACCOUNT_ID,
+    APP_ID,
+    APP_NAME,
     TABLE_ID,
     SINGLE_LINE_FIELD_NAME,
     DOCUMENT_FIELD_NAME,
-    VIEW_ID, 
+    VIEW_ID,
     VIEW_NAME,
 } = configuration;
 
@@ -25,6 +26,8 @@ const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
 console.log(`~~~ API-Node-SDK Test`);
 console.log(`~~~ USER: ${USERNAME}`);
 console.log(`~~~ PASS: ${PASSWORD}`);
+console.log(`~~~ ENV:  ${ACCESS_TOKEN}`);
+console.log(`~~~ ENV:  ${API_KEY}`);
 console.log(`~~~ ENV:  ${ENVIRONMENT}`);
 
 describe('OAUTH and constructor', () => {
@@ -33,15 +36,15 @@ describe('OAUTH and constructor', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
         });
         it('should instantiate with just an apiKey', () => {
-            expect(new TrackviaAPI(KEY).getUserKey()).to.equal(KEY);
+            expect(new TrackviaAPI(API_KEY).getUserKey()).to.equal(API_KEY);
         });
         it('should instantiate with an accessToken', () => {
-            expect(new TrackviaAPI(KEY, TOKEN).getUserKey()).to.equal(KEY);
-            expect(new TrackviaAPI(KEY, TOKEN).getAccessToken()).to.equal(TOKEN);
+            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getUserKey()).to.equal(API_KEY);
+            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getAccessToken()).to.equal(ACCESS_TOKEN);
         });
         it('should instantiate with a apiKey, an accessToken, and a host', () => {
-            expect(new TrackviaAPI(KEY, TOKEN).getUserKey()).to.equal(KEY);
-            expect(new TrackviaAPI(KEY, TOKEN).getAccessToken()).to.equal(TOKEN);
+            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getUserKey()).to.equal(API_KEY);
+            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getAccessToken()).to.equal(ACCESS_TOKEN);
         });
     });
     describe('POST /oauth/token in login method', () => {

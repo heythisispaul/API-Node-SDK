@@ -1,36 +1,45 @@
 const chai = require('chai');
 const expect = chai.expect;
 const TrackviaAPI = require('../src/trackvia-api');
-const localConfig = require('./testConfig');
 
-const configuration = process.env.CIRCLECI ? process.env : localConfig;
+const configuration = process.env.CIRCLECI ? process.env : require('./testConfig');;
 
 const {
-    ENVIRONMENT, 
-    USERNAME, 
-    PASSWORD, 
-    API_KEY, 
-    ACCOUNT_ID, 
-    APP_ID, 
-    APP_NAME, 
+    ENVIRONMENT,
+    USERNAME,
+    PASSWORD,
+    API_KEY,
+    ACCESS_TOKEN,
+    ACCOUNT_ID,
+    APP_ID,
+    APP_NAME,
     TABLE_ID,
     SINGLE_LINE_FIELD_NAME,
     DOCUMENT_FIELD_NAME,
-    VIEW_ID, 
+    VIEW_ID,
     VIEW_NAME,
 } = configuration;
 
 const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
 
 console.log(`~~~ API-Node-SDK Test`);
-console.log(`~~~ USER: ${USERNAME}`);
-console.log(`~~~ PASS: ${PASSWORD}`);
-console.log(`~~~ ENV:  ${ENVIRONMENT}`);
+console.log(`~~~ USER:  ${USERNAME}`);
+console.log(`~~~ PASS:  ${PASSWORD}`);
+console.log(`~~~ ENV:   ${ENVIRONMENT}`);
+console.log(`~~~ KEY:   ${API_KEY}`);
+console.log(`~~~ TOKEN: ${ACCESS_TOKEN}`);
 
 describe('OAUTH and constructor', () => {
     describe('constructor method for TrackViaAPI SDK', () => {
         it('should throw error if API key is not passed in', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
+        });
+        it('should instantiate with just an apiKey', () => {
+            expect(new TrackviaAPI(API_KEY).getUserKey()).to.equal(API_KEY);
+        });
+        it('should instantiate with an accessToken', () => {
+            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getUserKey()).to.equal(API_KEY);
+            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getAccessToken()).to.equal(ACCESS_TOKEN);
         });
     });
     describe('POST /oauth/token in login method', () => {
@@ -38,7 +47,7 @@ describe('OAUTH and constructor', () => {
             return api.login(USERNAME, PASSWORD)
                 .then(() => {
                     expect(api.getAccessToken()).to.not.be.undefined;
-                })
+                });
         });
         it('should throw error with incorrect username', () => {
             const notUsername = 'notmyusername';

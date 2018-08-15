@@ -1,3 +1,8 @@
+/** 
+ * Copy and paste the following into a file called testConfig.js in this test folder
+ * and fill out the information below.
+*/
+
 /**
  * For this test suite, you will need a TrackVia account with an API Key, an app, and a table
  * The table must have two fields: one Single Line field and one Document field
@@ -15,6 +20,7 @@ const config = {
     USERNAME: '',
     PASSWORD: '',
     API_KEY: '',
+    ACCESS_TOKEN: '',
     ACCOUNT_ID: 0,
 
     // Create a test app and enter the app's ID and name (case sensitive) here

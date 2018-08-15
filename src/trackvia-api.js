@@ -230,7 +230,7 @@ class TrackviaAPI {
     }
 
     /**
-     * Batch update records
+     * Batch update records - not officially supported
      * @param {Number} accountId
      * @param {Number} appId
      * @param {Number} tableId

@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const Auth = require('../src/lib/auth');
 
-describe('Auth Functions', () => {
+describe('Auth Helper Functions for SDK (no API endpoints tested)', () => {
     describe('setUserKey', () => {
         it('should set the userKey', () => {
             const userKey = 'hello';

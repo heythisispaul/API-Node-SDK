@@ -149,6 +149,8 @@ Parameters:
 #### updateRecords(accountId, appId, tableId, recordData)
 _Batch Update existing records._
 
+This method is not offically supported by TrackVia.
+
 Parameters:
 * accountId : number
 * appId : number
@@ -227,3 +229,12 @@ _Get user key for authentication._
 ## Additional Information
 For additional information visit https://developer.trackvia.com/.
 Note that the endpoints explained in the [docs](https://developer.trackvia.com/livedocs) are from the public api itself. This library is a wrapper around those endpoints to make development easier.
+
+## Testing
+`git clone git@github.com:Trackvia/API-Node-SDK.git`
+`cd API-Node-SDK`
+`npm install`
+
+Open `testConfig.js` in your text editor and set up a test app and test table in your account according to the instructions. For screenshots of the test setup, `open /test/testInstructions.html`.
+
+`npm test`

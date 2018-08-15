@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+h1{
+    font-weight: normal;
+}
+
+img {
+    border: 3px solid black;
+    margin: 10px 0;
+}

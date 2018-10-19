@@ -20,7 +20,7 @@ const {
     VIEW_NAME,
 } = configuration;
 
-const api = new TrackviaAPI(API_KEY, ENVIRONMENT);
+const api = new TrackviaAPI(API_KEY, '', ENVIRONMENT);
 
 console.log(`~~~ API-Node-SDK Test`);
 console.log(`~~~ USER:  ${USERNAME}`);
@@ -35,14 +35,16 @@ describe('OAUTH and constructor', () => {
             expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
         });
         it('should instantiate with just an apiKey', () => {
-            expect(new TrackviaAPI(API_KEY).getUserKey()).to.equal(API_KEY);
+            expect(new TrackviaAPI(API_KEY, '', ENVIRONMENT).getUserKey()).to.equal(API_KEY);
         });
         it('should instantiate with an accessToken', () => {
-            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getUserKey()).to.equal(API_KEY);
-            expect(new TrackviaAPI(API_KEY, ACCESS_TOKEN).getAccessToken()).to.equal(ACCESS_TOKEN);
+            const tokenAPI = new TrackviaAPI(API_KEY, ACCESS_TOKEN, ENVIRONMENT);
+
+            expect(tokenAPI.getUserKey()).to.equal(API_KEY);
+            expect(tokenAPI.getAccessToken()).to.equal(ACCESS_TOKEN);
         });
     });
-    describe('POST /oauth/token in login method', () => {
+    describe('POST /oauth/token in login method with username and password', () => {
         it('should login with valid username and password', () => {
             return api.login(USERNAME, PASSWORD)
                 .then(() => {
@@ -248,7 +250,7 @@ describe('VIEWS', () => {
                 })
         });
         it('should get a view with a query', () => {
-            return api.getView(VIEW_ID, {}, 'test')
+            return api.getView(VIEW_ID, {}, 'hello')
                 .then(results => {
                     expect(results.data).to.have.length.above(0);
                 })
@@ -268,7 +270,7 @@ describe('VIEWS', () => {
                 start: 0,
                 max: 1
             };
-            return api.getView(VIEW_ID, paging, 'test')
+            return api.getView(VIEW_ID, paging, 'hello')
                 .then(results => {
                     expect(results.data).to.have.lengthOf(1);
                 })

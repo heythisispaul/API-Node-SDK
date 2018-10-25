@@ -1,6 +1,6 @@
 {
   "name": "trackvia-api",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "Node SDK for Trackvia's openapi.",
   "keywords": [
     "trackvia"
@@ -33,7 +33,7 @@
     "nyc": "^13.1.0"
   },
   "dependencies": {
-    "request": "^2.65.0",
+    "request": "^2.88.0",
     "request-debug": "^0.2.0"
   }
 }

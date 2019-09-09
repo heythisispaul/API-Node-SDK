@@ -18,6 +18,7 @@ const {
     DOCUMENT_FIELD_NAME,
     VIEW_ID,
     VIEW_NAME,
+    FILTER_VALUE,
 } = configuration;
 
 const api = new TrackviaAPI(API_KEY, '', ENVIRONMENT);
@@ -286,6 +287,42 @@ describe('VIEWS', () => {
                 .then(results => {
                     expect(results.data).to.have.lengthOf(0);
                 })
+        });
+    });
+    describe('POST /openapi/views/{viewId}/filter filterView', () => {
+        it('should throw error if no view id is supplied', () => {
+            const noViewId = () => api.filterView(undefined, []);
+            expect(noViewId).to.throw('view id must be supplied to filter');
+        });
+        it('should throw error if no filterData is supplied', () => {
+            const noFilterData = () => api.filterView(VIEW_ID, undefined);
+            expect(noFilterData).to.throw('view id must be supplied to filter');
+        });
+        it('should throw error if filterData is empty', () => {
+            const noFilterData = () => api.filterView(VIEW_ID, []);
+            expect(noFilterData).to.throw('view id must be supplied to filter');
+        });
+        it('should return 2 records from the view', () => {
+            const filterData = [
+                { name: SINGLE_LINE_FIELD_NAME, value: null, operator: "IS_NULL", invertOperator: true }
+            ];
+            const allRecords = () => api.filterView(VIEW_ID, filterData);
+            expect(allRecords).to.have.lengthOf(2);
+        });
+        it('should return 1 record exactly', () => {
+            const filterData = [
+                { name: SINGLE_LINE_FIELD_NAME, value: FILTER_VALUE, operator: "=", invertOperator: false }
+            ];
+            const allRecords = () => api.filterView(VIEW_ID, filterData);
+            expect(allRecords).to.have.lengthOf(1);
+            expect(allRecords.data[FILTER_VALUE]).to.equal(FILTER_VALUE);
+        });
+        it('should not find a bad filter', () => {
+            const filterData = [
+                { name: SINGLE_LINE_FIELD_NAME, value: "BLAHBLAHBLAH", operator: "=", invertOperator: false }
+            ];
+            const allRecords = () => api.filterView(VIEW_ID, filterData);
+            expect(allRecords).to.have.lengthOf(0);
         });
     });
 });

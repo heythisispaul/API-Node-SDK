@@ -386,6 +386,34 @@ class TrackviaAPI {
     }
 
     /**
+     * Filters a view for records that meet the filterData criteria
+     * @param {Number} viewId - Id of the view to filter
+     * @param {Array<Object>} filterData - Array of objects for filtering. Example: [{ "name": "Filter Me", "operator": "=", "value": "adsfasdf", "invertOperator": false }]
+     * @param {Number} max - Max number of returned records
+     * @param {String} operator - AND / OR operator
+     * @returns Promise<Object>
+     */
+    filterView(viewId, filterData, max = 1000, operator = "AND" ) {
+        if(!viewId) {
+            throw new Error('view id must be supplied to filter');
+        }
+        if(!filterData || !filterData.length) {
+            throw new Error('filterData criteria must be supplied to filter');
+        }
+        const filterBody = {
+            fields: filterData,
+            operator,
+        };
+        return tvRequest.makeRequest({
+            url: __tv_host + `/openapi/views/${viewId}/filter`,
+            method: 'POST',
+            json: true,
+            body: filterBody,
+            qs: { max }
+        }, { querystring: true });
+    }
+
+    /**
      * Set access token for authentication.
      * @returns string
      */

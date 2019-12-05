@@ -338,7 +338,7 @@ describe('RECORDS', () => {
         it('should return a record object in the data property', () => {
             return api.getRecord(VIEW_ID, recordId)
                 .then(results => {
-                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME, 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
+                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME, DOCUMENT_FIELD_NAME,'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
                 })
         });
         it('should throw an error without a VIEW_ID', () => {

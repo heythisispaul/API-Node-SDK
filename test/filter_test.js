@@ -18,6 +18,7 @@ const {
     DOCUMENT_FIELD_NAME,
     VIEW_ID,
     VIEW_NAME,
+    FILTER_VALUE,
 } = configuration;
 
 const api = new TrackviaAPI(API_KEY, '', ENVIRONMENT);
@@ -29,21 +30,7 @@ console.log(`~~~ ENV:   ${ENVIRONMENT}`);
 console.log(`~~~ KEY:   ${API_KEY}`);
 console.log(`~~~ TOKEN: ${ACCESS_TOKEN}`);
 
-describe('OAUTH and constructor', () => {
-    describe('constructor method for TrackViaAPI SDK', () => {
-        it('should throw error if API key is not passed in', () => {
-            expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
-        });
-        it('should instantiate with just an apiKey', () => {
-            expect(new TrackviaAPI(API_KEY, '', ENVIRONMENT).getUserKey()).to.equal(API_KEY);
-        });
-        it('should instantiate with an accessToken', () => {
-            const tokenAPI = new TrackviaAPI(API_KEY, ACCESS_TOKEN, ENVIRONMENT);
-
-            expect(tokenAPI.getUserKey()).to.equal(API_KEY);
-            expect(tokenAPI.getAccessToken()).to.equal(ACCESS_TOKEN);
-        });
-    });
+describe('Testing', () => {
     describe('POST /oauth/token in login method with username and password', () => {
         it('should login with valid username and password', () => {
             return api.login(USERNAME, PASSWORD)
@@ -51,39 +38,7 @@ describe('OAUTH and constructor', () => {
                     expect(api.getAccessToken()).to.not.be.undefined;
                 });
         });
-        it('should throw error with incorrect username', () => {
-            const notUsername = 'notmyusername';
-            return api.login(notUsername, PASSWORD)
-                .catch((err) => {
-                    expect(err).to.be.instanceOf(Error);
-                });
-        });
-        it('should throw error with incorrect password', () => {
-            const notPassword = 'notmypassword';
-            return api.login(USERNAME, notPassword)
-                .catch((err) => {
-                    expect(err).to.be.instanceOf(Error);
-                });
-        });
-        it('should throw error with no username', () => {
-            return api.login(PASSWORD)
-                .catch((err) => {
-                    expect(err).to.be.instanceOf(Error);
-                });
-        });
-        it('should throw error with no password', () => {
-            return api.login(USERNAME)
-                .catch((err) => {
-                    expect(err).to.be.instanceOf(Error);
-                });
-        });
-        it('should throw error with no username and password', () => {
-            return api.login()
-                .catch((err) => {
-                    expect(err).to.be.instanceOf(Error);
-                });
-        });
-    });
+    
 });
 
 describe('APPS', () => {
@@ -288,6 +243,42 @@ describe('VIEWS', () => {
                 })
         });
     });
+    describe('POST /openapi/views/{viewId}/filter filterView', () => {
+        it('should throw error if no view id is supplied', () => {
+            const noViewId = () => api.filterView(undefined, []);
+            expect(noViewId).to.throw('view id must be supplied to filter');
+        });
+        it('should throw error if no filterData is supplied', () => {
+            const noFilterData = () => api.filterView(VIEW_ID, undefined);
+            expect(noFilterData).to.throw('view id must be supplied to filter');
+        });
+        it('should throw error if filterData is empty', () => {
+            const noFilterData = () => api.filterView(VIEW_ID, []);
+            expect(noFilterData).to.throw('view id must be supplied to filter');
+        });
+        it('should return 2 records from the view', () => {
+            const filterData = [
+                { name: SINGLE_LINE_FIELD_NAME, value: null, operator: "IS_NULL", invertOperator: true }
+            ];
+            const allRecords = () => api.filterView(VIEW_ID, filterData);
+            expect(allRecords).to.have.lengthOf(2);
+        });
+        it('should return 1 record exactly', () => {
+            const filterData = [
+                { name: SINGLE_LINE_FIELD_NAME, value: FILTER_VALUE, operator: "=", invertOperator: false }
+            ];
+            const allRecords = () => api.filterView(VIEW_ID, filterData);
+            expect(allRecords).to.have.lengthOf(1);
+            expect(allRecords.data[FILTER_VALUE]).to.equal(FILTER_VALUE);
+        });
+        it('should not find a bad filter', () => {
+            const filterData = [
+                { name: SINGLE_LINE_FIELD_NAME, value: "BLAHBLAHBLAH", operator: "=", invertOperator: false }
+            ];
+            const allRecords = () => api.filterView(VIEW_ID, filterData);
+            expect(allRecords).to.have.lengthOf(0);
+        });
+    });
 });
 
 
@@ -338,7 +329,7 @@ describe('RECORDS', () => {
         it('should return a record object in the data property', () => {
             return api.getRecord(VIEW_ID, recordId)
                 .then(results => {
-                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME, DOCUMENT_FIELD_NAME, 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
+                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME, 'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
                 })
         });
         it('should throw an error without a VIEW_ID', () => {

@@ -11,10 +11,19 @@ class TrackviaAPI {
      * @param {String} apikey
      * @param {String} accessToken
      * @param {String} host
+     * @param {int} accountId
      */
-    constructor(userKey, accessToken = '', host = 'https://go.trackvia.com:443') {
+    constructor(userKey, accessToken = '', host = 'https://go.trackvia.com', accountId = null) {
         if(!userKey) {
-            throw new Error('Must provide API key to TrackviaAPI constructor');
+            throw new Error('Must provide API key to TrackViaAPI constructor');
+        }
+
+        if(host == null || host == '') {
+            host = 'https://go.trackvia.com';
+        }
+
+        if(accountId) {
+            auth.setAccountId(accountId);
         }
 
         if (accessToken.length) {
@@ -24,6 +33,8 @@ class TrackviaAPI {
         global.__tv_host = host;
 
         auth.setUserKey(userKey);
+
+        auth.setAccountId(accountId);
     }
 
     /**
@@ -411,6 +422,14 @@ class TrackviaAPI {
      */
     getUserKey() {
         return auth.getUserKey();
+    }
+
+    /**
+     * Get account ID
+     * @returns string
+     */
+    getAccountId() {
+        return auth.getAccountId();
     }
 
     enableDebug() {

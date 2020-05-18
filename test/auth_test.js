@@ -55,4 +55,17 @@ describe('Auth Helper Functions for SDK (no API endpoints tested)', () => {
             expect(result).to.be.a('promise');
         });
     });
+    describe('setAccountId', () => {
+        it('should set the account id', () => {
+            const accountId = 1;
+            Auth.setAccountId(accountId);
+            expect(Auth.accountId).to.equal(accountId);
+        });
+    });
+    describe('getAccountId', () => {
+        it('should return the account id', () => {
+            const accountId = Auth.getAccountId();
+            expect(accountId).to.be.a('number');
+        });
+    });
 });

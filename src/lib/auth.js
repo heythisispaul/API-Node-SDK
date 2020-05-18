@@ -67,6 +67,13 @@ class Auth {
             });
         });
     }
+
+    setAccountId(accountId) {
+        this.accountId = accountId;
+    }
+    getAccountId() {
+        return this.accountId;
+    }
 }
 
 module.exports = new Auth();

@@ -42,6 +42,12 @@ class tvRequest {
             requestDetails[paramType].user_key = auth.getUserKey();
         }
 
+        if(auth.getAccountId()) {
+            requestDetails.headers = {
+                'account-id': auth.getAccountId()
+            }
+        }
+
 
         return new Promise((resolve, reject) => {
             request(requestDetails, (err, res, body) => {

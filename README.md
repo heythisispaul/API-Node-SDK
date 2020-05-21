@@ -2,7 +2,7 @@
 Node SDK for working with application data in TrackVia.
 
 ## Getting Started
-Login to your Trackvia account and navigate to https://go.trackvia.com/#/my-info. Copy down the API key.
+Login to your Trackvia account and navigate to https://go.trackvia.com/#/my-info. Copy down the API key and Account ID.
 
 ##### Install via npm:
 `npm install trackvia-api`
@@ -15,7 +15,7 @@ Create an instance of the Trackvia api with your API key:
 var TrackviaAPI = require('trackvia-api'); // if installed through npm
 var TrackviaAPI = require('./path/to/trackvia-api.js'); // if include manually
 
-var api = new TrackviaAPI('YOUR KEY HERE');
+var api = new TrackviaAPI('YOUR KEY HERE', 'ACCESS TOKEN HERE', 'HOST', 'ACCOUNT ID');
 ```
 
 ## Authenticating
@@ -23,7 +23,7 @@ You must authenticate before accessing any data in Trackvia. There are two metho
 
 #### TrackviaAPI constructor
 ```javascript
-var api = new TrackviaAPI('myAPIKey', 'myAccessToken');
+var api = new TrackviaAPI('myAPIKey', 'myAccessToken', 'https://go.trackvia.com', 12345);
 // Successfully authenticated..
 // Make additional request in here
 ```
@@ -37,7 +37,7 @@ api.setAccessToken('myAccessToken');
 
 #### #login()
 ```javascript
-api.login('myTrackviaAccount@gmail.com', 'myPassword')
+api.login('myTrackviaAccount@trackvia.com', 'myPassword')
 .then(() => {
     // Successfully authenticated..
     // Make additional request in here

@@ -20,7 +20,7 @@ const {
     VIEW_NAME,
 } = configuration;
 
-const api = new TrackviaAPI(API_KEY, '', ENVIRONMENT);
+const api = new TrackviaAPI(API_KEY, '', ENVIRONMENT, ACCOUNT_ID);
 
 console.log(`~~~ API-Node-SDK Test`);
 console.log(`~~~ USER:  ${USERNAME}`);
@@ -32,16 +32,19 @@ console.log(`~~~ TOKEN: ${ACCESS_TOKEN}`);
 describe('OAUTH and constructor', () => {
     describe('constructor method for TrackViaAPI SDK', () => {
         it('should throw error if API key is not passed in', () => {
-            expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackviaAPI constructor');
+            expect(() => new TrackviaAPI()).to.Throw(Error, 'Must provide API key to TrackViaAPI constructor');
         });
         it('should instantiate with just an apiKey', () => {
-            expect(new TrackviaAPI(API_KEY, '', ENVIRONMENT).getUserKey()).to.equal(API_KEY);
+            expect(new TrackviaAPI(API_KEY, '', '').getUserKey()).to.equal(API_KEY);
         });
         it('should instantiate with an accessToken', () => {
             const tokenAPI = new TrackviaAPI(API_KEY, ACCESS_TOKEN, ENVIRONMENT);
 
             expect(tokenAPI.getUserKey()).to.equal(API_KEY);
             expect(tokenAPI.getAccessToken()).to.equal(ACCESS_TOKEN);
+        });
+        it('should instantiate with an optional account id', () => {
+            expect(new TrackviaAPI(API_KEY, '', '', ACCOUNT_ID).getAccountId()).to.equal(ACCOUNT_ID);
         });
     });
     describe('POST /oauth/token in login method with username and password', () => {
@@ -338,7 +341,7 @@ describe('RECORDS', () => {
         it('should return a record object in the data property', () => {
             return api.getRecord(VIEW_ID, recordId)
                 .then(results => {
-                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME, DOCUMENT_FIELD_NAME,'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
+                    expect(results.data).to.have.all.keys([SINGLE_LINE_FIELD_NAME,'id', 'Last User', 'Updated', 'Created', 'Created By User', 'Last User(id)', 'Record ID', 'Created By User(id)']);
                 })
         });
         it('should throw an error without a VIEW_ID', () => {

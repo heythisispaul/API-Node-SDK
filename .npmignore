@@ -1,0 +1,10 @@
+# source
+src/
+
+# test
+test/
+.nyc_output/
+
+# config
+.circleci
+webpack.*
